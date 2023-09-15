@@ -1,0 +1,693 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+	Portal da Nota Fiscal Eletrônica
+</title>
+
+    <!-- CSS -->
+    <link href="css/geral.css" rel="stylesheet" type="text/css" /><link href="css/classes.css" rel="stylesheet" type="text/css" /><link href="css/paginasInternas.css" rel="stylesheet" type="text/css" /><link href="css/estilo_visualizacao.css" rel="stylesheet" type="text/css" />
+
+	
+    <!-- Javascript -->
+    <script src="scripts/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="scripts/menu.js" type="text/javascript"></script>
+    <script src="scripts/mascaras.js" type="text/javascript"></script>
+    <script src="//www.receita.fazenda.gov.br/estatistica/estatistica.js" type="text/javascript"></script>
+    <script src="scripts/captcha-som.js" type="text/javascript"></script>
+
+    <meta http-equiv="cache-control" content="no-store, no-cache, must-revalidate, Post-Check=0, Pre-Check=0" /><meta http-equiv="pragma" content="no-cache" /><meta http-equiv="expires" content="0" />
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" type="text/javascript"></script>
+
+</head>
+<body onselectstart="return true;">
+    <div id="barra-brasil" style="background: #7F7F7F; height: 20px; padding: 0 0 0 10px; display: block;">
+        <ul id="menu-barra-temp" style="list-style: none;">
+            <li style="display: inline; float: left; padding-right: 10px; margin-right: 10px; border-right: 1px solid #EDEDED">
+                <a href="http://brasil.gov.br" style="font-family: sans,sans-serif; text-decoration: none; color: white;">Portal do Governo Brasileiro</a></li>
+            <li><a style="font-family: sans,sans-serif; text-decoration: none; color: white;" href="http://epwg.governoeletronico.gov.br/barra/atualize.html">Atualize sua Barra de Governo</a></li>
+        </ul>
+    </div>
+   
+    <script defer="defer" src="//barra.brasil.gov.br/barra.js" type="text/javascript"></script>
+ 
+
+
+    <div id="divCentral">
+        <form method="post" action="./manifestacaoDestinatario.aspx?tipoConteudo=o9MkXc+hmKs%3d&amp;AspxAutoDetectCookieSupport=1" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJOTk4NTUwMTMyDxQrAAIVAgAAZBYCZg9kFgICAw9kFhACCQ8PFgIeBFRleHQFDzM4LDY3NyBiaWxow7Vlc2RkAg0PDxYCHwAFDjIsMjMxIG1pbGjDtWVzZGQCDw8PFgIeC05hdmlnYXRlVXJsBRVpbmZvRXN0YXRpc3RpY2FzLmFzcHhkZAITDw8WAh8BBTlodHRwczovL3d3dzEuc3BlZC5mYXplbmRhLmdvdi5ici9sb2dpbi9zcGVkL3NwZWRuZmVhY2Vzc29kZAIXDw8WAh8BBTJwZXJndW50YXNGcmVxdWVudGVzLmFzcHg/dGlwb0NvbnRldWRvPTNPdzFuZlRCeklvPWRkAicPPCsAEQMADxYEHgtfIURhdGFCb3VuZGceC18hSXRlbUNvdW50AgVkARAWABYAFgAMFCsAABYCZg9kFg5mDw8WAh4HVmlzaWJsZWhkZAIBD2QWAmYPZBYCAgEPDxYGHg1BbHRlcm5hdGVUZXh0BSZDb25oZWNpbWVudG8gZGUgVHJhbnNwb3J0ZSBFbGV0csO0bmljbx4PQ29tbWFuZEFyZ3VtZW50BR1odHRwOi8vd3d3LmN0ZS5mYXplbmRhLmdvdi5ich4ISW1hZ2VVcmwFJH4vaW1hZ2Vucy9iYW5uZXJzX1Zpc2l0ZV9DVGVfT2ZmLnBuZxYCHgV0aXRsZQUmQ29uaGVjaW1lbnRvIGRlIFRyYW5zcG9ydGUgRWxldHLDtG5pY29kAgIPZBYCZg9kFgICAQ8PFgYfBQUpU2lzdGVtYSBQw7pibGljbyBkZSBFc2NyaXR1cmHDp8OjbyBGaXNjYWwfBgUjaHR0cDovL3d3dzEucmVjZWl0YS5mYXplbmRhLmdvdi5ici8fBwUlfi9pbWFnZW5zL2Jhbm5lcnNfVmlzaXRlX1NwZWRfT2ZmLnBuZxYCHwgFKVNpc3RlbWEgUMO6YmxpY28gZGUgRXNjcml0dXJhw6fDo28gRmlzY2FsZAIDD2QWAmYPZBYCAgEPDxYGHwUFKlN1cGVyaW50ZW5kw6puY2lhIGRhIFpvbmEgRnJhbmNhIGRlIE1hbmF1cx8GBRpodHRwOi8vd3d3LnN1ZnJhbWEuZ292LmJyLx8HBSB+L2ltYWdlbnMvYmFubmVyc19tYW5hdXNfT2ZmLnBuZxYCHwgFKlN1cGVyaW50ZW5kw6puY2lhIGRhIFpvbmEgRnJhbmNhIGRlIE1hbmF1c2QCBA9kFgJmD2QWAgIBDw8WBh8FBStNYW5pZmVzdG8gRWxldHLDtG5pY28gZGUgRG9jdW1lbnRvcyBGaXNjYWlzHwYFJmh0dHBzOi8vZGZlLXBvcnRhbC5zdnJzLnJzLmdvdi5ici9NZGZlHwcFHX4vaW1hZ2Vucy9iYW5uZXJfbWRmZV9PZmYucG5nFgIfCAUrTWFuaWZlc3RvIEVsZXRyw7RuaWNvIGRlIERvY3VtZW50b3MgRmlzY2Fpc2QCBQ9kFgJmD2QWAgIBDw8WBh8FBTJQb3J0YWwgTmFjaW9uYWwgZG8gQmlsaGV0ZSBkZSBQYXNzYWdlbSBFbGV0csO0bmljbx8GBSVodHRwczovL2RmZS1wb3J0YWwuc3Zycy5ycy5nb3YuYnIvQnBlHwcFHH4vaW1hZ2Vucy9iYW5uZXJfYnBlX09mZi5wbmcWAh8IBTJQb3J0YWwgTmFjaW9uYWwgZG8gQmlsaGV0ZSBkZSBQYXNzYWdlbSBFbGV0csO0bmljb2QCBg8PFgIfBGhkZAIzD2QWAgIBD2QWAmYPZBYCAgsPZBYEAgcPZBYEZg9kFgQCAw8PFgYfAAUINzE0ODE3MDkeCFJlYWRPbmx5Zx4HRW5hYmxlZGhkZAIFDw8WBh8ABQYwMDAxMDIfCWcfCmhkZAIBD2QWAgIDDw8WBB8JZx8KaGRkAgkPZBYEZg9kFgICAw8PZBYIHgpPbktleVByZXNzBRltYXNjYXJhKHRoaXMsc29OdW1lcm9zNDQpHgdvbkZvY3VzBRltYXNjYXJhKHRoaXMsc29OdW1lcm9zNDQpHgZvbkJsdXIFGW1hc2NhcmEodGhpcyxzb051bWVyb3M0NCkeCG9uQ2hhbmdlBRltYXNjYXJhKHRoaXMsc29OdW1lcm9zNDQpZAIBD2QWBgIDDxBkZBYBZmQCBw8QZGQWAWZkAgsPPCsAEQIBEBYAFgAWAAwUKwAAZAI3Dw8WAh8ABS1Qb3J0YWwgZGEgTkYtZSAyMDIzIC0gTm90YSBGaXNjYWwgRWxldHLDtG5pY2FkZBgFBR5fX0NvbnRyb2xzUmVxdWlyZVBvc3RCYWNrS2V5X18WCQUPY3RsMDAkaWJ0QnVzY2FyBSljdGwwMCRnZHZMaW5rc0Rlc3RhcXVlJGN0bDAyJEltYWdlQnV0dG9uMQUpY3RsMDAkZ2R2TGlua3NEZXN0YXF1ZSRjdGwwMyRJbWFnZUJ1dHRvbjEFKWN0bDAwJGdkdkxpbmtzRGVzdGFxdWUkY3RsMDQkSW1hZ2VCdXR0b24xBSljdGwwMCRnZHZMaW5rc0Rlc3RhcXVlJGN0bDA1JEltYWdlQnV0dG9uMQUpY3RsMDAkZ2R2TGlua3NEZXN0YXF1ZSRjdGwwNiRJbWFnZUJ1dHRvbjEFJWN0bDAwJENvbnRlbnRQbGFjZUhvbGRlcjEkcmJ0Q29tQ2hhdmUFJWN0bDAwJENvbnRlbnRQbGFjZUhvbGRlcjEkcmJ0U2VtQ2hhdmUFJWN0bDAwJENvbnRlbnRQbGFjZUhvbGRlcjEkcmJ0U2VtQ2hhdmUFKWN0bDAwJENvbnRlbnRQbGFjZUhvbGRlcjEkbXR2TWFuaWZlc3RhY2FvDw9kZmQFLmN0bDAwJENvbnRlbnRQbGFjZUhvbGRlcjEkZ2R2UmVzdWx0YWRvUGVzcXVpc2EPZ2QFJmN0bDAwJENvbnRlbnRQbGFjZUhvbGRlcjEkbXR2SW5zY3JpY2FvDw9kZmQFFmN0bDAwJGdkdkxpbmtzRGVzdGFxdWUPPCsADAEIAgFk82Q2bMhBlfRyEC3dhQ77sOYrE6s=" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/portal/WebResource.axd?d=ZWO9axJrMUCOr1izP3UEZRCC9H9dses7etW7JecjiAOQDqMwdG-StzfDPAgcsQ8hxRkl-AMsAJBR-BfkCGB56pQ3gKo1&amp;t=637814545746327080" type="text/javascript"></script>
+
+
+<script src="https://assinadoc.estaleiro.serpro.gov.br/scripts/assinadoc.js" type="text/javascript"></script>
+<script src="/portal/ScriptResource.axd?d=1W1585aVEo9s4z7KJrrsHVaLsJxU2vzc71lBff2ytoIiSOlOsKyl4Kb2PxK0iiXU_rEyK5pAx1iea9wA5P9zj2GdycmlBlCanA-2Inb8KiuWio1R4g3fHryb5jF2elYXrfcJPHRdJCbXj-IF-OEcYMJMiOI1&amp;t=14d69f50" type="text/javascript"></script>
+<script src="/portal/ScriptResource.axd?d=mEdZQL4-NwECxt-JTyttk6L9nZIgV2gXEYVXAtZsi0K6ekMkFlv9Yn_Kj22VMi8DGrNLu0_DpTP9BqO8cJwvdqgjvvPW2azeebt459xHltLpU2IYCjWzfsXnSvCpl58N24rAFBpwmeIv8vlDIdkuJMLyc185M28vUneHfEZinqa8QFoa0&amp;t=49337fe8" type="text/javascript"></script>
+<script src="/portal/ScriptResource.axd?d=_4eicGuFpUqdgWen_lV3HusxGEZOmOKKDBxJqwShbSOkmNnRzePJCRrfaqi4yAG4omXSLCzZIOXtktjVsEiYo-GKVvPgshIWEGRj0wBWGGBZ17M9NOTmgil71sUoZPjju8MLRc_ZAKcMsgCu1bH4TYQkMzdgF4kGwmOy40aQpegCvFgb0&amp;t=49337fe8" type="text/javascript"></script>
+<script src="/portal/ScriptResource.axd?d=mT0y51o0LUqDERR1gK1PHgdY4dmheOGIEDsXTAvO15rluXxRmlDpbs2OZ5GzabS8ogN435zUFAzSJzOrMm273LNi9kZaBmfIr0PVpeY4-vWwhlIQYTGcvGdpKZHGke6lc6yRzn6USQ_EFxLZL1yRaRizerg1&amp;t=ffffffff87636c38" type="text/javascript"></script>
+<script src="/portal/ScriptResource.axd?d=mNl4X5z8gakgoLeSKYyjidGXzDI8WB_js4c1BOO0SSuYnxrESMP3UuYxSNorl1bu2ullLNpjhtJZfqvuPfq8VIKxbhTYLUh7VwLGXDUL71x3QnCVhGvW8Jj_VC2_LMItPVyX2fC6DCfiCRENC9-saVW3pew1&amp;t=ffffffff87636c38" type="text/javascript"></script>
+<script src="/portal/ScriptResource.axd?d=gy1cG5fQPk2O5gMbY0Pn3yHuPzFtfmg8QV1Pogc1KBWIteuUKmKBuBIyfW6KqHWIvgFeCm3oM-z5WZSRNugLOVc55rLnYVeKyHRamgeBETeIpLo0gpVt7LFGQ7bKUNRono7LVxGw777PGlSFHyqC91m3kP41&amp;t=ffffffff87636c38" type="text/javascript"></script>
+<script src="/portal/ScriptResource.axd?d=aNMBzIixTOb4x9OTZNL5biKT0bpsWTKFMlit8dMFQJavlF2hvLsk_Wlk0VVmlETfWHY1ZX0PZI0HRrl3Cs8XWmJdvPuGfmYNTUTC_ZUO6a3_BTOOTWwfHEmr5YKwWwIY9Q4muUyNtv1eMDjmNJMtC4OMSCtFzSfY1oTKlV65AYDShHn90&amp;t=ffffffff87636c38" type="text/javascript"></script>
+<script src="/portal/ScriptResource.axd?d=hrh3Yb6czhWN6wUcMZcUIeFOLf8grYBT6HRxG1BYQae0SChobBeHW4T_zIJTyIaQOnDjcTFfQhYdP19zBElCxyRv6CmBwEPXAAdjHE2nI6VmTzhLMs638WBFuAYwkLSf8lHbIF1OX750GX0TLea66fbTLEg2XV3OrgeL_2WtW-YygiYH0&amp;t=ffffffff87636c38" type="text/javascript"></script>
+<script src="/portal/ScriptResource.axd?d=vz8B9u4YtVYX1pVqKcPnTT5VAHjqfY7XelyFKI4TdQTifTuY9dnz1e811Kfd2J734nTtqNu1JVebhTGlFncJMGmkBtDc3CnuIQD99rtw0doLzeqZwljjDwrsd35OJb4v96jNLff34pUPIDT3edHBA3bRPj_SlcRScFLyjafLvlBejTK-0&amp;t=ffffffff87636c38" type="text/javascript"></script>
+<script src="/portal/ScriptResource.axd?d=u9gFRG_7YktrV4NulEFzs0AbMrx8VSF73ldTY0YL-OuOO1zkEapDJywAv1vyYUGySV1TRiwVILUTmCcRQFqF-cfvgxFpRh9zMy3JMh90gP-KyJUT75SzPtk-LwlXSmNqp5_lXIOKCcldvFCOMY_4HY9xoVWKkN5p6PeL-R8PvJ6xw0xL0&amp;t=ffffffff87636c38" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+var PageMethods = function() {
+PageMethods.initializeBase(this);
+this._timeout = 0;
+this._userContext = null;
+this._succeeded = null;
+this._failed = null;
+}
+PageMethods.prototype = {
+_get_path:function() {
+ var p = this.get_path();
+ if (p) return p;
+ else return PageMethods._staticInstance.get_path();},
+obterHash:function(cnpj,chaveAcesso,justificativa,codEvento,dtAutorizacao,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'obterHash',false,{cnpj:cnpj,chaveAcesso:chaveAcesso,justificativa:justificativa,codEvento:codEvento,dtAutorizacao:dtAutorizacao},succeededCallback,failedCallback,userContext); }}
+PageMethods.registerClass('PageMethods',Sys.Net.WebServiceProxy);
+PageMethods._staticInstance = new PageMethods();
+PageMethods.set_path = function(value) { PageMethods._staticInstance.set_path(value); }
+PageMethods.get_path = function() { return PageMethods._staticInstance.get_path(); }
+PageMethods.set_timeout = function(value) { PageMethods._staticInstance.set_timeout(value); }
+PageMethods.get_timeout = function() { return PageMethods._staticInstance.get_timeout(); }
+PageMethods.set_defaultUserContext = function(value) { PageMethods._staticInstance.set_defaultUserContext(value); }
+PageMethods.get_defaultUserContext = function() { return PageMethods._staticInstance.get_defaultUserContext(); }
+PageMethods.set_defaultSucceededCallback = function(value) { PageMethods._staticInstance.set_defaultSucceededCallback(value); }
+PageMethods.get_defaultSucceededCallback = function() { return PageMethods._staticInstance.get_defaultSucceededCallback(); }
+PageMethods.set_defaultFailedCallback = function(value) { PageMethods._staticInstance.set_defaultFailedCallback(value); }
+PageMethods.get_defaultFailedCallback = function() { return PageMethods._staticInstance.get_defaultFailedCallback(); }
+PageMethods.set_enableJsonp = function(value) { PageMethods._staticInstance.set_enableJsonp(value); }
+PageMethods.get_enableJsonp = function() { return PageMethods._staticInstance.get_enableJsonp(); }
+PageMethods.set_jsonpCallbackParameter = function(value) { PageMethods._staticInstance.set_jsonpCallbackParameter(value); }
+PageMethods.get_jsonpCallbackParameter = function() { return PageMethods._staticInstance.get_jsonpCallbackParameter(); }
+PageMethods.set_path("manifestacaoDestinatario.aspx");
+PageMethods.obterHash= function(cnpj,chaveAcesso,justificativa,codEvento,dtAutorizacao,onSuccess,onFailed,userContext) {PageMethods._staticInstance.obterHash(cnpj,chaveAcesso,justificativa,codEvento,dtAutorizacao,onSuccess,onFailed,userContext); }
+var gtc = Sys.Net.WebServiceProxy._generateTypedConstructor;
+Type.registerNamespace('Serpro.Sped.NFe.Portal.Entidade');
+if (typeof(Serpro.Sped.NFe.Portal.Entidade.RetornoMetodoWeb) === 'undefined') {
+Serpro.Sped.NFe.Portal.Entidade.RetornoMetodoWeb=gtc("Serpro.Sped.NFe.Portal.Entidade.RetornoMetodoWeb");
+Serpro.Sped.NFe.Portal.Entidade.RetornoMetodoWeb.registerClass('Serpro.Sped.NFe.Portal.Entidade.RetornoMetodoWeb');
+}
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+//]]>
+</script>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="4A2556B2" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdABt6UJNghWf8rlmHFywvM/O7BGqPhwrln+9PTG+a425C4DQnJFM/mcs/d0VTMpMTYCGeOO0tTX51je1QOUgbhAXiTo1Ol8i+hK4G4Vo+jsDQOY8aEJZjnoPmyZdMj0cTDps02TTrU70chmk+oYZUyBFDTddRiEgPoDnKgxp8GtbRSntqtYigAfo8/YbVgIfOTYH4AOl0l97aTmPNWOEmUMtLKmBS14FN+WjES3+DgGSxUhsv/8cgfVlU0c0VJB1DUuyMESBPWoOaEyn28Ulnl8glx4q7/POFF+ZhCwckO4rNNnFk901JR2pNXVbNcOI28xAqUK/kcTe8dXMlKGYx88PGXH16ZoHTII0N4WNnQmi39uS7Ad/dJxX0AdeXtOePjhHuGGF9M+Mxvu0wxo38I3j9MDR3qY3QLwCuQSDCQWUiHtbLJWvmIhvpV/TH6ilkyr9jwSlajPz+juOASAFOSnLvxX4zJujwnr3S+vdsZIjtyPnsuBk53VJ5/QjVX776QEfIx36AVoOLbK7qJmlnnVXS5IDR4kz9/BfZYB0/OL+tTQeHAMAxfxedYdp4fmCh4H0pzljB6Cfa94v2yvBncGdipL4SHQ==" />
+</div>
+            <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManager', 'aspnetForm', ['tctl00$upnBuscar','','tctl00$ContentPlaceHolder1$pnlInformacoesConsulta',''], [], [], 90, 'ctl00');
+//]]>
+</script>
+
+
+
+            <div id="tudoSemRodape" class="contemFloat">
+                <div id="cabecalho">
+                    <div id="menuAcessibilidade">
+                        <?xml version="1.0" encoding="utf-8"?><a href="listaSubMenu.aspx?Id=6H4uVlIEaKs=">Conheça a NF-e</a><a href="listaSubMenu.aspx?Id=esCrSQFUvGg=">Serviços</a><a href="listaSubMenu.aspx?Id=ndIjl+iEFdE=">Legislação</a><a href="listaSubMenu.aspx?Id=04BIflQt1aY=">Documentos</a><a href="listaSubMenu.aspx?Id=BMPFMBoln3w=">Downloads</a><a href="https://www1.sped.fazenda.gov.br/login/sped/spednfeacesso">Área Restrita</a><a href="https://www1.sped.fazenda.gov.br/spednfeacesso/arnfe/inicial/listaSubMenu.aspx?Id=UORZ3ynALMA=">Documentos e outros</a>
+                    </div>
+                    
+                    <div id="divTransparente" onclick="javascript:location.href = 'principal.aspx'">
+                    </div>
+                    <div id="imgHome">
+                        <a href="principal.aspx">
+                            <img id="ibtHome" src="imagens/home_icon_Off.png" onmouseover="javascript: trocarImagem(this)"
+                                onmouseout="javascript: trocarImagem(this)" alt="Link para a página inicial do Portal da NF-e" />
+                        </a>
+                    </div>
+                    <div id="menu">
+                        <?xml version="1.0" encoding="utf-8"?><ul class="abasMenu" xmlns:chave="http://exslt.org/chaveacesso"><li class="itemMenuPrincipal"><a href="listaSubMenu.aspx?Id=esCrSQFUvGg=">Serviços</a><ul class="dropdown"><li><a href="consultaRecaptcha.aspx?tipoConsulta=resumo&amp;tipoConteudo=7PhJ+gAVw2g=">Consultar NF-e</a></li><li><a href="consulta.aspx?tipoConsulta=inutilizacao&amp;tipoConteudo=nDmpH/MjKrg=">Consultar Inutilização</a></li><li><a href="solicitaCertificado.aspx?tipoConteudo=49BQNAeyGfk=">Consultar Duplicidade AN</a></li><li><a href="disponibilidade.aspx?versao=0.00&amp;tipoConteudo=P2c98tUpxrI=">Consultar Disponibilidade</a></li><li><a href="manifestacaoDestinatario.aspx?tipoConteudo=o9MkXc+hmKs=">Manifestação Destinatário</a></li><li><a href="webServices.aspx?tipoConteudo=OUC/YVNWZfo=">Relação de Serviços Web</a></li><li><a href="https://www.nfe.fazenda.gov.br/AgendamentoSVC/?tipoConteudo=dKnzIG+XQXM=">Agendamento SVC-AN</a></li><li><a href="consultaEPECConciliacao.aspx?tipoConteudo=uoOHfIFn8Nc=">Consulta/Liberação de EPEC pendente de conciliação</a></li></ul></li><li class="itemMenuPrincipal"><a href="listaSubMenu.aspx?Id=ndIjl+iEFdE=">Legislação</a><ul class="dropdown"><li><a href="listaConteudo.aspx?tipoConteudo=3GhDwJ/ZeSI=">Ajustes SINIEF</a></li><li><a href="listaConteudo.aspx?tipoConteudo=AX0vPC2u8xc=">Atos COTEPE</a></li><li><a href="listaConteudo.aspx?tipoConteudo=QIcipqxg0bU=">Convênios</a></li><li><a href="listaConteudo.aspx?tipoConteudo=gPWmdzYAb0Y=">Protocolos</a></li></ul></li><li class="itemMenuPrincipal"><a href="listaSubMenu.aspx?Id=04BIflQt1aY=">Documentos</a><ul class="dropdown"><li><a href="listaConteudo.aspx?tipoConteudo=ndIjl+iEFdE=">Manuais </a></li><li><a href="listaConteudo.aspx?tipoConteudo=BMPFMBoln3w=">Esquemas XML</a></li><li><a href="listaConteudo.aspx?tipoConteudo=04BIflQt1aY=">Notas Técnicas</a></li><li><a href="listaConteudo.aspx?tipoConteudo=hXzemuyNHW4=">Informes Técnicos</a></li><li><a href="listaConteudo.aspx?tipoConteudo=/NJarYc9nus=">Diversos</a></li></ul></li><li class="itemMenuPrincipal"><a href="listaSubMenu.aspx?Id=BMPFMBoln3w=">Downloads</a><ul class="dropdown"><li><a href="download.aspx?tipoConteudo=vBO/4eBj5F4=">Visualizador de DF-e</a></li><li><a href="download.aspx?tipoConteudo=OFrcUd5//Lg=">Assinador</a></li><li><a href="listaConteudo.aspx?tipoConteudo=BS6VqmEd2vM=">Manifestador de NF-e</a></li></ul></li></ul>
+                    </div>
+                </div>
+                <div id="barraDireita">
+                    <div id="estatisticas">
+                        <h1>Estatísticas da NF-e</h1>
+                        <span id="ctl00_lblTituloNfeAut">NF-e Autorizadas</span>
+                        <br />
+                        <div class="valorEstatistica">
+                            <span id="ctl00_lblTotalNfeAut">38,677 bilhões</span>
+                        </div>
+                        <span id="ctl00_lblTituloEmissores">Número de Emissores</span>
+                        <br />
+                        <div class="valorEstatistica">
+                            <span id="ctl00_lblTotalEmissores">2,231 milhões</span>
+                        </div>
+                        <a id="ctl00_hlkInfoEstatisticas" href="infoEstatisticas.aspx">... saiba mais</a>
+                    </div>
+                    <div id="busca">
+                        <div id="ctl00_upnBuscar">
+	
+                                <input name="ctl00$txtPalavraChave" type="text" id="ctl00_txtPalavraChave" class="campoTextoBusca" />
+                                
+                                <input type="image" name="ctl00$ibtBuscar" id="ctl00_ibtBuscar" class="botaoBuscar" onmouseover="javascript: trocarImagem(this)" onmouseout="javascript: trocarImagem(this)" src="imagens/botao_buscar_Off_completo.png" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ibtBuscar&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" />
+                                
+                            
+</div>
+                    </div>
+                    <div id="linkAreaRestrita">
+                        <p>
+                            <a id="ctl00_hlkAreaRestrita" href="https://www1.sped.fazenda.gov.br/login/sped/spednfeacesso">Área Restrita</a>
+                        </p>
+                    </div>
+                    <div id="linkCentralNFe">
+                        <p>
+                            <a id="ctl00_hlkCentralAtendimento" href="https://www.serpro.gov.br/menu/suporte/central-de-atendimento-serpro-nfe-cte">Central de Atendimento</a>
+                        </p>
+                    </div>
+                    <div id="linkFAQ">
+                        <p>
+                            <a id="ctl00_hlkFAQ" href="perguntasFrequentes.aspx?tipoConteudo=3Ow1nfTBzIo=">Perguntas Frequentes</a>
+                        </p>
+                    </div>
+                    <div id="linkSefaz">
+                        <p>
+                            <span id="ctl00_lblPortaisSefaz">Portais e Secretarias</span>
+                        </p>
+                    </div>
+                    <div id="linkBanners">
+                        <p>
+                            <span id="ctl00_lblPortaisEstaduais">Portais Estaduais da NF-e</span>
+                            <br />
+                            <?xml version="1.0" encoding="utf-8"?><select onchange="javascript: window.open(this.value)"><option value="">Selecione</option><option value="http://sefaznet.ac.gov.br/nfe/">Acre</option><option value="http://www.sefaz.al.gov.br/nfe/">Alagoas</option><option value="https://www.sefaz.ap.gov.br/index.php/nf-e">Amapá</option><option value="http://sistemas.sefaz.am.gov.br/nfeweb/portal/index.do">Amazonas</option><option value="http://www.sefaz.ba.gov.br/scripts/default/nfiscal.asp">Bahia</option><option value="http://nfe.sefaz.ce.gov.br/">Ceará</option><option value="http://dec.fazenda.df.gov.br/">Distrito Federal</option><option value="http://internet.sefaz.es.gov.br/informacoes/nfe/">Espirito Santo</option><option value="https://www.economia.go.gov.br/receita-estadual/documentos-fiscais/nfe.html">Goiás</option><option value="https://sistemas1.sefaz.ma.gov.br/portalsefaz/jsp/pagina/pagina.jsf?codigo=11">Maranhão</option><option value="http://www.sefaz.mt.gov.br/portal/nfe/">Mato Grosso</option><option value="http://www.nfe.ms.gov.br/">Mato Grosso do Sul</option><option value="http://www.sped.fazenda.mg.gov.br/">Minas Gerais</option><option value="http://www.sefa.pa.gov.br/index.php/component/banners/click/7">Pará</option><option value="https://www.sefaz.pb.gov.br/servirtual/documentos-fiscais/nf-e/consulta-completa">Paraíba</option><option value="http://www.sped.fazenda.pr.gov.br/modules/conteudo/conteudo.php?conteudo=1">Paraná</option><option value="https://www.sefaz.pe.gov.br/Servicos/Nota-Fiscal-Eletronica/Paginas/Apresentacao.aspx">Pernambuco</option><option value="http://portal.sefaz.pi.gov.br/documentoseletronicos/portal/efd/index.php">Piauí</option><option value="http://www.fazenda.rj.gov.br/sefaz/faces/webcenter/faces/owResource.jspx?z=oracle.webcenter.doclib%21UCMServer%21UCMServer%2523dDocName%253A100998">Rio de Janeiro</option><option value="http://www.set.rn.gov.br/contentProducao/Aplicacao/SET_v2/nfe/gerados/inicio.asp">Rio Grande do Norte</option><option value="http://receita.fazenda.rs.gov.br/lista/2933/nf-e-(nota-fiscal-eletronica)">Rio Grande do Sul</option><option value="https://www.sefin.ro.gov.br/conteudo.jsp?idCategoria=524">Rondônia</option><option value="https://www.sefaz.rr.gov.br/empresa/consultar-internamento-nf">Roraima</option><option value="http://nfe.sef.sc.gov.br/">Santa Catarina</option><option value="http://www.fazenda.sp.gov.br/nfe/">São Paulo</option><option value="http://nfe.sefaz.se.gov.br/">Sergipe</option><option value="http://www.sefaz.to.gov.br/">Tocantins</option></select>
+                        </p>
+                        <p>
+                            <span id="ctl00_lblLinkSefaz">Secretarias de Fazenda</span>
+                            <br />
+                            <?xml version="1.0" encoding="utf-8"?><select onchange="javascript: window.open(this.value)"><option value="">Selecione</option><option value="http://www.sefaz.ac.gov.br">Acre</option><option value="http://www.sefaz.al.gov.br/">Alagoas</option><option value="http://www.sefaz.ap.gov.br/">Amapá</option><option value="http://www.sefaz.am.gov.br/">Amazonas</option><option value="http://www.sefaz.ba.gov.br/">Bahia</option><option value="http://www.sefaz.ce.gov.br/">Ceará</option><option value="http://www.fazenda.df.gov.br/">Distrito Federal</option><option value="http://www.sefaz.es.gov.br/">Espirito Santo</option><option value="http://www.sefaz.go.gov.br/">Goiás</option><option value="http://www.sefaz.ma.gov.br/">Maranhão</option><option value="http://www.sefaz.mt.gov.br/">Mato Grosso</option><option value="http://www.sefaz.ms.gov.br/">Mato Grosso do Sul</option><option value="http://www.fazenda.mg.gov.br/">Minas Gerais</option><option value="http://www.sefa.pa.gov.br/">Pará</option><option value="https://www.sefaz.pb.gov.br/">Paraíba</option><option value="http://www.sped.fazenda.pr.gov.br/">Paraná</option><option value="https://www.sefaz.pe.gov.br/SitePages/Home.aspx">Pernambuco</option><option value="http://www.sefaz.pi.gov.br/">Piauí</option><option value="https://www.google.com.br/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0ahUKEwig-4mTh7rRAhUHjpAKHW_bCCYQFggcMAA&amp;url=http%3A%2F%2Fwww.fazenda.rj.gov.br%2F&amp;usg=AFQjCNEYn8VLkOFFH3QwfbCmOeh_LOGUEw">Rio de Janeiro</option><option value="http://www.set.rn.gov.br/">Rio Grande do Norte</option><option value="http://fazenda.rs.gov.br/inicial">Rio Grande do Sul</option><option value="https://www.sefin.ro.gov.br/">Rondônia</option><option value="http://www.sefaz.rr.gov.br/">Roraima</option><option value="http://www.sef.sc.gov.br/">Santa Catarina</option><option value="http://www.fazenda.sp.gov.br/">São Paulo</option><option value="http://www.sefaz.se.gov.br/">Sergipe</option><option value="http://www.sefaz.to.gov.br/">Tocantins</option></select>
+                        </p>
+                        
+                        
+                        <img id="linhaDivisoria" src="imagens/linha_divisoria.png" alt="Linha divisória" />
+                        <div>
+	<table cellspacing="0" rules="all" id="ctl00_gdvLinksDestaque" style="border-width:0px;border-collapse:collapse;">
+		<tr>
+			<td>
+                                        <input type="image" name="ctl00$gdvLinksDestaque$ctl02$ImageButton1" id="ctl00_gdvLinksDestaque_ctl02_ImageButton1" onmouseover="javascript: trocarImagem(this)" onmouseout="javascript: trocarImagem(this)" title="Conhecimento de Transporte Eletrônico" src="imagens/banners_Visite_CTe_Off.png" alt="Conhecimento de Transporte Eletrônico" onclick="aspnetForm.target =&#39;_blank&#39;;WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$gdvLinksDestaque$ctl02$ImageButton1&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" />
+                                    </td>
+		</tr><tr>
+			<td>
+                                        <input type="image" name="ctl00$gdvLinksDestaque$ctl03$ImageButton1" id="ctl00_gdvLinksDestaque_ctl03_ImageButton1" onmouseover="javascript: trocarImagem(this)" onmouseout="javascript: trocarImagem(this)" title="Sistema Público de Escrituração Fiscal" src="imagens/banners_Visite_Sped_Off.png" alt="Sistema Público de Escrituração Fiscal" onclick="aspnetForm.target =&#39;_blank&#39;;WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$gdvLinksDestaque$ctl03$ImageButton1&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" />
+                                    </td>
+		</tr><tr>
+			<td>
+                                        <input type="image" name="ctl00$gdvLinksDestaque$ctl04$ImageButton1" id="ctl00_gdvLinksDestaque_ctl04_ImageButton1" onmouseover="javascript: trocarImagem(this)" onmouseout="javascript: trocarImagem(this)" title="Superintendência da Zona Franca de Manaus" src="imagens/banners_manaus_Off.png" alt="Superintendência da Zona Franca de Manaus" onclick="aspnetForm.target =&#39;_blank&#39;;WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$gdvLinksDestaque$ctl04$ImageButton1&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" />
+                                    </td>
+		</tr><tr>
+			<td>
+                                        <input type="image" name="ctl00$gdvLinksDestaque$ctl05$ImageButton1" id="ctl00_gdvLinksDestaque_ctl05_ImageButton1" onmouseover="javascript: trocarImagem(this)" onmouseout="javascript: trocarImagem(this)" title="Manifesto Eletrônico de Documentos Fiscais" src="imagens/banner_mdfe_Off.png" alt="Manifesto Eletrônico de Documentos Fiscais" onclick="aspnetForm.target =&#39;_blank&#39;;WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$gdvLinksDestaque$ctl05$ImageButton1&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" />
+                                    </td>
+		</tr><tr>
+			<td>
+                                        <input type="image" name="ctl00$gdvLinksDestaque$ctl06$ImageButton1" id="ctl00_gdvLinksDestaque_ctl06_ImageButton1" onmouseover="javascript: trocarImagem(this)" onmouseout="javascript: trocarImagem(this)" title="Portal Nacional do Bilhete de Passagem Eletrônico" src="imagens/banner_bpe_Off.png" alt="Portal Nacional do Bilhete de Passagem Eletrônico" onclick="aspnetForm.target =&#39;_blank&#39;;WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$gdvLinksDestaque$ctl06$ImageButton1&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" />
+                                    </td>
+		</tr>
+	</table>
+</div>
+                        
+                    </div>
+                </div>
+                <div id="conteudo">
+                    <div id="localizacao">
+                        <div id="voceEstaAqui">
+                            Você está aqui:
+                        </div>
+                        <div id="caminho">
+                            <a id="ctl00_hlkPaginaPrincipao" href="principal.aspx">Página Principal</a>
+                            <?xml version="1.0" encoding="utf-8"?>
+    &gt;
+    <a href="listaSubMenu.aspx?Id=esCrSQFUvGg=">Serviços</a>
+      &gt;
+      <span class="fonteCinza">Manifestação Destinatário</span>
+                            
+                            
+                        </div>
+                    </div>
+                    <div id="zoomAcessibilidade">
+                        <img src="imagens/acessibilidade_reduzir_Off.png" id="imgZoomMenos" onmouseover="javascript: trocarImagem(this)"
+                            onmouseout="javascript: trocarImagem(this)" alt="Link que permite reduzir o tamanho da fonte" />
+                        <img src="imagens/acessibilidade_ampliar_Off.png" id="imgZoomMais" onmouseover="javascript: trocarImagem(this)"
+                            onmouseout="javascript: trocarImagem(this)" alt="Link que permite aumentar o tamanho da fonte" />
+                    </div>
+                    <div id="conteudoDinamico">
+                        
+
+    <div id="divErro" class="painel_erro_sistema">
+        <div class="divMensagem">
+        </div>
+    </div>
+
+    <div id="ctl00_ContentPlaceHolder1_pnlInformacoesConsulta">
+	
+
+            
+
+            <div class="divTituloPrincipal">
+                <span id="ctl00_ContentPlaceHolder1_lblTituloPrincipal" class="tituloPrincipal">Manifestação do Destinatário</span>
+            </div>
+
+            <input type="hidden" name="ctl00$ContentPlaceHolder1$hdfChaveSelecionada" id="ctl00_ContentPlaceHolder1_hdfChaveSelecionada" />
+            <input type="hidden" name="ctl00$ContentPlaceHolder1$hdfDataAutorizacao" id="ctl00_ContentPlaceHolder1_hdfDataAutorizacao" />
+            <input type="hidden" name="ctl00$ContentPlaceHolder1$hdfLinhaSelecionada" id="ctl00_ContentPlaceHolder1_hdfLinhaSelecionada" />
+
+            <div id="ctl00_ContentPlaceHolder1_pnlManifestacao" class="divComBordas">
+		
+                <span id="ctl00_ContentPlaceHolder1_lblPergunta" class="labelConsulta">Escolha uma opção abaixo para realizar a Manifestação do Destinatário.</span>
+                <p>
+                    <input id="ctl00_ContentPlaceHolder1_rbtComChave" type="radio" name="ctl00$ContentPlaceHolder1$Escolha" value="rbtComChave" checked="checked" /><label for="ctl00_ContentPlaceHolder1_rbtComChave">Tenho a Chave de Acesso</label>
+                    <input id="ctl00_ContentPlaceHolder1_rbtSemChave" type="radio" name="ctl00$ContentPlaceHolder1$Escolha" value="rbtSemChave" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$ContentPlaceHolder1$rbtSemChave\&#39;,\&#39;\&#39;)&#39;, 0)" /><label for="ctl00_ContentPlaceHolder1_rbtSemChave">Não tenho a Chave de Acesso</label>
+                </p>
+                
+                        <span id="ctl00_ContentPlaceHolder1_lblCNPJ" class="labelConsulta">CNPJ:</span>
+                        <p class="paragrafoSemMargem">
+                            <input name="ctl00$ContentPlaceHolder1$iptCNPJBase" type="text" value="71481709" readonly="readonly" id="ctl00_ContentPlaceHolder1_iptCNPJBase" disabled="disabled" class="aspNetDisabled" style="color:#999999;width:71px;" />&nbsp;/
+                           
+                            <input name="ctl00$ContentPlaceHolder1$iptCNPJ" type="text" value="000102" maxlength="6" readonly="readonly" id="ctl00_ContentPlaceHolder1_iptCNPJ" disabled="disabled" class="aspNetDisabled" style="color:#999999;width:52px;" />
+                            <span id="ctl00_ContentPlaceHolder1_rfvCNPJ" style="display:none;"></span>
+                            <span id="ctl00_ContentPlaceHolder1_revCNPJ" style="display:none;"></span>
+                        </p>
+                    
+
+                
+                        <span id="ctl00_ContentPlaceHolder1_lblChaveAcesso" class="labelConsulta">Chave de Acesso:</span>
+                        <p class="paragrafoSemMargem">
+                            <input name="ctl00$ContentPlaceHolder1$iptChaveAcesso" type="text" id="ctl00_ContentPlaceHolder1_iptChaveAcesso" class="txtChaveAcesso" OnKeyPress="mascara(this,soNumeros44)" onFocus="mascara(this,soNumeros44)" onBlur="mascara(this,soNumeros44)" onChange="mascara(this,soNumeros44)" />
+                            <span id="ctl00_ContentPlaceHolder1_rfvChaveAcesso" style="display:none;"></span>
+                            <span id="ctl00_ContentPlaceHolder1_revChaveAcesso" style="display:none;"></span>
+                        </p>
+                    
+                <div id="ctl00_ContentPlaceHolder1_pnlRealizarManifestacao">
+			
+                    <p class="paragrafoMargemSuperior">
+                        <span id="ctl00_ContentPlaceHolder1_lblRealizarManifestacao" class="labelConsulta">Realizar manifestação:</span>
+                        <p class="paragrafoSemMargem">
+                            <span id="ctl00_ContentPlaceHolder1_rfvRealizarManifestacao" style="display:none;"></span>
+                            <select name="ctl00$ContentPlaceHolder1$ddlManifestar" id="ctl00_ContentPlaceHolder1_ddlManifestar" onchange="javascript: habilitarManifestacao();">
+				<option selected="selected" value="">Selecione uma op&#231;&#227;o</option>
+				<option value="210210">Ciencia da Operacao</option>
+				<option value="210200">Confirmacao da Operacao</option>
+				<option value="210220">Desconhecimento da Operacao</option>
+				<option value="210240">Operacao nao Realizada</option>
+
+			</select>
+                        </p>
+                        <span id="ctl00_ContentPlaceHolder1_lblJustif" class="labelConsulta">Justificativa:</span>
+                        <p class="paragrafoSemMargem">
+                            <span id="ctl00_ContentPlaceHolder1_rfvJustificativa" style="display:none;"></span>
+                            <input name="ctl00$ContentPlaceHolder1$iptJustificativa" type="text" maxlength="255" id="ctl00_ContentPlaceHolder1_iptJustificativa" style="width:600px;" />
+                            <br />
+                            <span class="labelConsulta">* Não são permitidos caracteres especiais como: @,#,$,%,*,", etc...</span>
+                        </p>
+                        <p style="margin-top: 10px;">
+                            
+
+                            <input type="submit" name="ctl00$ContentPlaceHolder1$btnRealizarManifestacao" value="OK" onclick="javascript: assinar();WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnRealizarManifestacao&quot;, &quot;&quot;, true, &quot;comChave&quot;, &quot;&quot;, false, false))" id="ctl00_ContentPlaceHolder1_btnRealizarManifestacao" class="botao" />
+                        </p>
+                    </p>
+                
+		</div>
+                <div id="ctl00_ContentPlaceHolder1_vdsErrosPesquisar" class="listaErro" style="display:none;">
+
+		</div>
+                <div id="ctl00_ContentPlaceHolder1_vdsErros" class="listaErro" style="display:none;">
+
+		</div>
+                
+            
+	</div>
+            <div id="pnlAssinar" title="Aguardando a assinatura, validação e envio do documento..." style="visibility: hidden">
+
+                <p>
+                    O processo de assinatura é realizado fora do navegador, por meio do aplicativo Java que será instalado.
+               
+                </p>
+                <p>
+                    O comportamento do Java WebStart varia de acordo com o navegador que está sendo utilizado para acessar a aplicação. 
+               
+                </p>
+                <p>
+                    <span style="font-weight: bold">É indicado atualizar o navegador para uma versão mais atual, pois poderá não funcionar em navegadores antigos. 
+                     É necessário habilitar janelas popup e o uso de cookies.</span>
+                </p>
+                <p>
+                    Para alguns navegadores a execução iniciará automaticamente.   
+               
+                </p>
+                <p>
+                    Se não ocorrer a inicialização automática do Assinador, será baixado o arquivo .jnlp e o usuário deverá iniciar manualmente a aplicação por meio deste arquivo.
+               
+                </p>
+                <p>
+                    Se não for possível iniciar usando o duplo clique, será necessário executar, via linha de comando, o script: 
+                   
+                    <span style="font-weight: bold"><code>javaws [nome-do-arquivo].jnlp</code></span>
+                </p>
+            </div>
+
+            
+            <input name="ctl00$ContentPlaceHolder1$hdfDocumentoAssinado" type="hidden" id="ctl00_ContentPlaceHolder1_hdfDocumentoAssinado" />
+            <input name="ctl00$ContentPlaceHolder1$hdfChaveAutenticacao" type="hidden" id="ctl00_ContentPlaceHolder1_hdfChaveAutenticacao" />
+            <input name="ctl00$ContentPlaceHolder1$hdfThumbprint" type="hidden" id="ctl00_ContentPlaceHolder1_hdfThumbprint" />
+            <input name="ctl00$ContentPlaceHolder1$hdfStatusAssinatura" type="hidden" id="ctl00_ContentPlaceHolder1_hdfStatusAssinatura" value="SemAssinatura" />
+        
+</div>
+
+    <div id="ctl00_ContentPlaceHolder1_uppProgresso" style="display:none;">
+	
+            <div class="progesso">
+                <img src='imagens/progresso.gif' border='0' alt="" />
+            </div>
+        
+</div>
+
+    <script type="text/javascript">
+
+        $("#pnlAssinar").css("display", "none");
+        $("#divErro").css("display", "none");
+
+        setInterval(function () {
+            $("#divErro").css("display", "none");
+        }, 30000);
+
+        function VincularEventos() {
+            $("#ctl00_ContentPlaceHolder1_pnlRealizarManifestacao").on("hide", function () {
+                $("#divErro").css("display", "none");
+            });
+        }
+
+        function assinar() {
+            //$("#pnlAssinar").css("display", "block");
+
+
+            $("#ctl00_ContentPlaceHolder1_pnlErro").css("visibility", "hidden");
+            var evento = $("#ctl00_ContentPlaceHolder1_ddlManifestar").val();
+            var justificativa = $("#ctl00_ContentPlaceHolder1_iptJustificativa").val().trim();
+
+            var dataAutorizacao = "";
+
+            var cnpj = "";
+            if ($("#ctl00_ContentPlaceHolder1_iptCPF").html() == '') {
+
+                cnpj = $("#ctl00_ContentPlaceHolder1_iptCPF").val();
+            }
+            else {
+                cnpj = $("#ctl00_ContentPlaceHolder1_iptCNPJBase").val() + $("#ctl00_ContentPlaceHolder1_iptCNPJ").val();
+            }
+            var chaveAcesso = "";
+            if ($("input[name='ctl00$ContentPlaceHolder1$Escolha']:checked").val() == "rbtSemChave") {
+                chaveAcesso = $("#ctl00_ContentPlaceHolder1_hdfChaveSelecionada").val();
+                dataAutorizacao = $("#ctl00_ContentPlaceHolder1_hdfDataAutorizacao").val();
+            }
+            else {
+                chaveAcesso = $("#ctl00_ContentPlaceHolder1_iptChaveAcesso").val();
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "manifestacaoDestinatario.aspx/obterHash",
+                data: "{'cnpj':'" + cnpj + "', 'chaveAcesso':'" + chaveAcesso + "', 'justificativa':'" + justificativa + "', 'codEvento':'" + evento + "', 'dtAutorizacao':'" + dataAutorizacao + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (jsonResult) {
+                    if (jsonResult.d.Status == "alerta") {
+                        exibirMensagemErro("alerta", jsonResult.d.Mensagem);
+                    }
+                    else if (jsonResult.d.Status == "erro") {
+                        exibirMensagemErro("erro_sistema", jsonResult.d.Mensagem)
+                    }
+                    else {
+                        $("#pnlAssinar").css("visibility", "visible");
+                        $("#pnlAssinar").dialog({ width: 500, dialogClass: 'modalPopup' });
+                        $("#divCentral").addClass("modalBackground");
+
+                        $('div#pnlAssinar').on('dialogclose', function (event) {
+                            $("#divCentral").removeClass("modalBackground");
+                        });
+
+                        var chaveAutenticacao = jsonResult.d.InfoAssinadoc.Hash;
+                        var documento = jsonResult.d.InfoAssinadoc.Documento;
+                        var encoding = jsonResult.d.InfoAssinadoc.Encoding;
+                        var thumbprint = jsonResult.d.InfoAssinadoc.ThumbPrint;
+                        var xslt = jsonResult.d.InfoAssinadoc.XSLT;
+                        var idTagParaAssinar = jsonResult.d.InfoAssinadoc.IdTagParaAssinar;
+                        var tipoCustomizacao = jsonResult.d.InfoAssinadoc.TipoCustomizacaoXML;
+                        var timestamp = jsonResult.d.InfoAssinadoc.Timestamp;
+                        var sistemaOrigem = jsonResult.d.InfoAssinadoc.SistemaOrigem;
+
+                        $("#ctl00_ContentPlaceHolder1_hdfChaveAutenticacao").val(chaveAutenticacao);
+                        $("#ctl00_ContentPlaceHolder1_hdfThumbprint").val(thumbprint);
+
+                        var dadosAssinaturaXML = new assinadoc.DadosAssinaturaXML(documento, encoding, thumbprint, xslt, idTagParaAssinar, '', tipoCustomizacao, timestamp, chaveAutenticacao);
+                        assinadoc.Assinar(dadosAssinaturaXML, onSuccess, onCancel, onError, 5, sistemaOrigem);
+                    }
+                }
+            });
+        }
+
+        function habilitarManifestacao() {
+            var linha = $("#ctl00_ContentPlaceHolder1_hdfLinhaSelecionada").val();
+            var evento = $("#ctl00_ContentPlaceHolder1_ddlManifestar").val();
+
+            if (evento == "210210" || evento == "210200") {
+                $("#ctl00_ContentPlaceHolder1_iptJustificativa").attr("disabled", true);
+                $("#ctl00_ContentPlaceHolder1_iptJustificativa").val('');
+            }
+            else {
+                $("#ctl00_ContentPlaceHolder1_iptJustificativa").attr("disabled", false);
+            }
+
+            return;
+        }
+
+        function onSuccess(dadosAssinaturaXML) {
+            $("#ctl00_ContentPlaceHolder1_hdfChaveAutenticacao").val(dadosAssinaturaXML.chaveAutenticacao);
+            $("#ctl00_ContentPlaceHolder1_hdfDocumentoAssinado").val(dadosAssinaturaXML.documento);
+            $("#ctl00_ContentPlaceHolder1_hdfStatusAssinatura").val("Assinado");
+            $("#aspnetForm").submit();
+        }
+
+        function onCancel(msg) {
+            $('#pnlAssinar').dialog('close');
+        }
+
+        function onError(msg) {
+            $('#pnlAssinar').dialog('close');
+            exibirMensagemErro("Erro", "Falha no procedimento de assinatura")
+        }
+
+        function exibirMensagemErro(tipoErro, msg) {
+            $("#divErro div.divMensagem").html("<p>" + msg + "</p>");
+            $("#divErro").addClass("painel_" + tipoErro);
+            $("#divErro").css("display", "block");
+            $('html,body').animate({ scrollTop: 0 }, 'slow');
+        }
+
+    </script>
+
+
+                    </div>
+                </div>
+            </div>
+            <div id="rodape">
+                <div id="sombraRodape">
+                </div>
+                <div id="conteudoRodape">
+                    <div id="menuRodape">
+                        <?xml version="1.0" encoding="utf-8"?><a href="listaSubMenu.aspx?Id=6H4uVlIEaKs=">Conheça a NF-e</a><a href="listaSubMenu.aspx?Id=esCrSQFUvGg=">Serviços</a><a href="listaSubMenu.aspx?Id=ndIjl+iEFdE=">Legislação</a><a href="listaSubMenu.aspx?Id=04BIflQt1aY=">Documentos</a><a href="listaSubMenu.aspx?Id=BMPFMBoln3w=">Downloads</a><a href="https://www1.sped.fazenda.gov.br/login/sped/spednfeacesso">Área Restrita</a><a href="https://www1.sped.fazenda.gov.br/spednfeacesso/arnfe/inicial/listaSubMenu.aspx?Id=UORZ3ynALMA=">Documentos e outros</a>
+                        <span id="ctl00_lblPortalRodape" class="labelPortalRodape">Portal da NF-e 2023 - Nota Fiscal Eletrônica</span>
+                    </div>
+                    <div id="marcaReceita">
+                        <a href="//www.receita.fazenda.gov.br" target="_blank" class="imgReceita">
+                            <!--img src="imagens/marca_Receita.png" class="imgReceita" alt="Link para o sítio da Receita Federal"/-->
+                            Receita Federal </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tipoAmbiente">
+                <span id="ctl00_lblAmbiente"></span>
+            </div>
+
+        
+<script type="text/javascript">
+//<![CDATA[
+var Page_ValidationSummaries =  new Array(document.getElementById("ctl00_ContentPlaceHolder1_vdsErrosPesquisar"), document.getElementById("ctl00_ContentPlaceHolder1_vdsErros"));
+var Page_Validators =  new Array(document.getElementById("ctl00_ContentPlaceHolder1_rfvCNPJ"), document.getElementById("ctl00_ContentPlaceHolder1_revCNPJ"), document.getElementById("ctl00_ContentPlaceHolder1_rfvChaveAcesso"), document.getElementById("ctl00_ContentPlaceHolder1_revChaveAcesso"), document.getElementById("ctl00_ContentPlaceHolder1_rfvRealizarManifestacao"), document.getElementById("ctl00_ContentPlaceHolder1_rfvJustificativa"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var ctl00_ContentPlaceHolder1_rfvCNPJ = document.all ? document.all["ctl00_ContentPlaceHolder1_rfvCNPJ"] : document.getElementById("ctl00_ContentPlaceHolder1_rfvCNPJ");
+ctl00_ContentPlaceHolder1_rfvCNPJ.controltovalidate = "ctl00_ContentPlaceHolder1_iptCNPJ";
+ctl00_ContentPlaceHolder1_rfvCNPJ.errormessage = "O campo CNPJ é obrigatório.";
+ctl00_ContentPlaceHolder1_rfvCNPJ.display = "None";
+ctl00_ContentPlaceHolder1_rfvCNPJ.validationGroup = "comChave";
+ctl00_ContentPlaceHolder1_rfvCNPJ.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_ContentPlaceHolder1_rfvCNPJ.initialvalue = "";
+var ctl00_ContentPlaceHolder1_revCNPJ = document.all ? document.all["ctl00_ContentPlaceHolder1_revCNPJ"] : document.getElementById("ctl00_ContentPlaceHolder1_revCNPJ");
+ctl00_ContentPlaceHolder1_revCNPJ.controltovalidate = "ctl00_ContentPlaceHolder1_iptCNPJ";
+ctl00_ContentPlaceHolder1_revCNPJ.errormessage = "O CNPJ deve ter 14 dígitos.";
+ctl00_ContentPlaceHolder1_revCNPJ.display = "None";
+ctl00_ContentPlaceHolder1_revCNPJ.validationGroup = "comChave";
+ctl00_ContentPlaceHolder1_revCNPJ.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ContentPlaceHolder1_revCNPJ.validationexpression = "[0-9]{6}";
+var ctl00_ContentPlaceHolder1_rfvChaveAcesso = document.all ? document.all["ctl00_ContentPlaceHolder1_rfvChaveAcesso"] : document.getElementById("ctl00_ContentPlaceHolder1_rfvChaveAcesso");
+ctl00_ContentPlaceHolder1_rfvChaveAcesso.controltovalidate = "ctl00_ContentPlaceHolder1_iptChaveAcesso";
+ctl00_ContentPlaceHolder1_rfvChaveAcesso.errormessage = "O campo Chave de Acesso é obrigatório.";
+ctl00_ContentPlaceHolder1_rfvChaveAcesso.display = "None";
+ctl00_ContentPlaceHolder1_rfvChaveAcesso.validationGroup = "comChave";
+ctl00_ContentPlaceHolder1_rfvChaveAcesso.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_ContentPlaceHolder1_rfvChaveAcesso.initialvalue = "";
+var ctl00_ContentPlaceHolder1_revChaveAcesso = document.all ? document.all["ctl00_ContentPlaceHolder1_revChaveAcesso"] : document.getElementById("ctl00_ContentPlaceHolder1_revChaveAcesso");
+ctl00_ContentPlaceHolder1_revChaveAcesso.controltovalidate = "ctl00_ContentPlaceHolder1_iptChaveAcesso";
+ctl00_ContentPlaceHolder1_revChaveAcesso.errormessage = "Chave de acesso inválida. A chave de acesso deve ter 44 dígitos.";
+ctl00_ContentPlaceHolder1_revChaveAcesso.display = "None";
+ctl00_ContentPlaceHolder1_revChaveAcesso.validationGroup = "comChave";
+ctl00_ContentPlaceHolder1_revChaveAcesso.evaluationfunction = "RegularExpressionValidatorEvaluateIsValid";
+ctl00_ContentPlaceHolder1_revChaveAcesso.validationexpression = "[0-9]{44}";
+var ctl00_ContentPlaceHolder1_rfvRealizarManifestacao = document.all ? document.all["ctl00_ContentPlaceHolder1_rfvRealizarManifestacao"] : document.getElementById("ctl00_ContentPlaceHolder1_rfvRealizarManifestacao");
+ctl00_ContentPlaceHolder1_rfvRealizarManifestacao.controltovalidate = "ctl00_ContentPlaceHolder1_ddlManifestar";
+ctl00_ContentPlaceHolder1_rfvRealizarManifestacao.errormessage = "O campo Realizar Manifestação é obrigatório.";
+ctl00_ContentPlaceHolder1_rfvRealizarManifestacao.display = "None";
+ctl00_ContentPlaceHolder1_rfvRealizarManifestacao.validationGroup = "comChave";
+ctl00_ContentPlaceHolder1_rfvRealizarManifestacao.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_ContentPlaceHolder1_rfvRealizarManifestacao.initialvalue = "";
+var ctl00_ContentPlaceHolder1_rfvJustificativa = document.all ? document.all["ctl00_ContentPlaceHolder1_rfvJustificativa"] : document.getElementById("ctl00_ContentPlaceHolder1_rfvJustificativa");
+ctl00_ContentPlaceHolder1_rfvJustificativa.controltovalidate = "ctl00_ContentPlaceHolder1_iptJustificativa";
+ctl00_ContentPlaceHolder1_rfvJustificativa.errormessage = "O campo Justificativa é obrigatório.";
+ctl00_ContentPlaceHolder1_rfvJustificativa.display = "None";
+ctl00_ContentPlaceHolder1_rfvJustificativa.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+ctl00_ContentPlaceHolder1_rfvJustificativa.initialvalue = "";
+var ctl00_ContentPlaceHolder1_vdsErrosPesquisar = document.all ? document.all["ctl00_ContentPlaceHolder1_vdsErrosPesquisar"] : document.getElementById("ctl00_ContentPlaceHolder1_vdsErrosPesquisar");
+ctl00_ContentPlaceHolder1_vdsErrosPesquisar.validationGroup = "pesquisarPorNSU";
+var ctl00_ContentPlaceHolder1_vdsErros = document.all ? document.all["ctl00_ContentPlaceHolder1_vdsErros"] : document.getElementById("ctl00_ContentPlaceHolder1_vdsErros");
+ctl00_ContentPlaceHolder1_vdsErros.validationGroup = "comChave";
+//]]>
+</script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        
+(function(id) {
+    var e = document.getElementById(id);
+    if (e) {
+        e.dispose = function() {
+            Array.remove(Page_ValidationSummaries, document.getElementById(id));
+        }
+        e = null;
+    }
+})('ctl00_ContentPlaceHolder1_vdsErrosPesquisar');
+
+(function(id) {
+    var e = document.getElementById(id);
+    if (e) {
+        e.dispose = function() {
+            Array.remove(Page_ValidationSummaries, document.getElementById(id));
+        }
+        e = null;
+    }
+})('ctl00_ContentPlaceHolder1_vdsErros');
+Sys.Application.add_init(function() {
+    $create(AjaxControlToolkit.AutoCompleteBehavior, {"completionListCssClass":"popupBusca","delimiterCharacters":"(),.! ","id":"ctl00_aceAutoCompletarBusca","minimumPrefixLength":1,"serviceMethod":"ListarAutocompletarCampoPesquisar","servicePath":"AutoCompletarBusca.asmx"}, null, null, $get("ctl00_txtPalavraChave"));
+});
+
+document.getElementById('ctl00_ContentPlaceHolder1_rfvCNPJ').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ContentPlaceHolder1_rfvCNPJ'));
+}
+
+document.getElementById('ctl00_ContentPlaceHolder1_revCNPJ').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ContentPlaceHolder1_revCNPJ'));
+}
+
+document.getElementById('ctl00_ContentPlaceHolder1_rfvChaveAcesso').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ContentPlaceHolder1_rfvChaveAcesso'));
+}
+
+document.getElementById('ctl00_ContentPlaceHolder1_revChaveAcesso').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ContentPlaceHolder1_revChaveAcesso'));
+}
+
+document.getElementById('ctl00_ContentPlaceHolder1_rfvRealizarManifestacao').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ContentPlaceHolder1_rfvRealizarManifestacao'));
+}
+
+document.getElementById('ctl00_ContentPlaceHolder1_rfvJustificativa').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('ctl00_ContentPlaceHolder1_rfvJustificativa'));
+}
+Sys.Application.add_init(function() {
+    $create(Sys.UI._UpdateProgress, {"associatedUpdatePanelId":"ctl00_ContentPlaceHolder1_pnlInformacoesConsulta","displayAfter":500,"dynamicLayout":true}, null, null, $get("ctl00_ContentPlaceHolder1_uppProgresso"));
+});
+//]]>
+</script>
+</form>
+    </div>
+</body>
+
+</html>
+�i��.R      e� e�F��e�    �    O^partitionKey=%28https%2Cfazenda.gov.br%29,:https://www.nfe.fazenda.gov.br/portal/manifestacaoDestinatario.aspx?tipoConteudo=o9MkXc+hmKs=&AspxAutoDetectCookieSupport=1 strongly-framed 1 security-info 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 request-method GET response-head HTTP/1.1 200 OK
+Cache-Control: private
+Content-Type: text/html; charset=utf-8
+Server: Microsoft-IIS/8.5
+X-AspNet-Version: 4.0.30319
+X-Powered-By: ASP.NET
+Date: Fri, 15 Sep 2023 02:35:44 GMT
+Content-Length: 54190
+ original-response-headers Cache-Control: private
+Content-Type: text/html; charset=utf-8
+Server: Microsoft-IIS/8.5
+Set-Cookie: ASP.NET_SessionId=jihncpsrrjgwyz3oxsd4bc4n; path=/; HttpOnly; SameSite=Lax
+X-AspNet-Version: 4.0.30319
+Set-Cookie: ASP.NET_SessionId=jihncpsrrjgwyz3oxsd4bc4n; path=/; HttpOnly; SameSite=Lax
+Set-Cookie: assinadoc_cert_type=A1; domain=.www.nfe.fazenda.gov.br; path=/
+X-Powered-By: ASP.NET
+Date: Fri, 15 Sep 2023 02:35:44 GMT
+Content-Length: 54190
+ ctid 1 uncompressed-len 0 net-response-time-onstart 61 net-response-time-onstop 98   Ӯ
