@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Notas Fiscais</title>
+    <!-- Inclua os links para os arquivos CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Inclua um link para font-awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            padding: 20px;
+        }
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table th,
+        .table td {
+            border-top: none;
+        }
+        .table th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="text-center">
+            <h1>Lista de Notas Fiscais</h1>
+        </header>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Razão Social do Emitente</th>
+                        <th>CNPJ/CPF</th>
+                        <th>Data de Emissão</th>
+                        <th>Tipo de Operação</th>
+                        <th>Valor Total da NF-e</th>
+                        <th>Download XML</th>
+                        <th>Download PDF</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for nf in nfelist %}
+                    <tr>
+                        <td>{{ nf['Razão Social do Emitente:'] }}</td>
+                        <td>{{ nf['CNPJ/CPF:'] }}</td>
+                        <td>{{ nf['Data de Emissão: '] }}</td>
+                        <td>{{ nf['Tipo de Operação: '] }}</td>
+                        <td>R${{ nf['Valor Total da NF-e: '] }}</td>
+                        <td><a href="/download?filename={{ nf['access_key'] }}.xml" class="btn btn-success"><i class="fas fa-download"></i> XML</a></td>
+                        <td><a href="/download?filename={{ nf['access_key'] }}.pdf" class="btn btn-danger"><i class="fas fa-download"></i> PDF</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Inclua os links para os arquivos JavaScript do Bootstrap (opcional) -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
