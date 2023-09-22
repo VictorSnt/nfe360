@@ -3,7 +3,7 @@ from playwright.async_api import async_playwright, Download
 
 async def download_nf_xml(access_key, download_folder):
     
-    
+    filename = access_key + '.xml'
     async with async_playwright() as p:
         browser = await p.chromium.launch(
             headless=True
@@ -17,8 +17,8 @@ async def download_nf_xml(access_key, download_folder):
         await page.click('button[class="g-recaptcha"]')
 
         async def handle_download(download: Download):    
-            filename = download_folder / access_key / '.xml'
-            await download.save_as(filename)
+            filepath = download_folder / filename  
+            await download.save_as(filepath)
         page.on("download", handle_download)
 
         await page.click('a[onclick="if (!window.__cfRLUnblockHandlers) return false; return DownXML()"]', timeout=10000000)   

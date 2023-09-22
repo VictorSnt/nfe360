@@ -14,18 +14,25 @@ DOWNLOADS_FOLDER = Path(os.environ.get('DOWNLOADS_FOLDER', None))
 CACHE_JSON = Path(os.environ.get('CACHE_JSON', None))
 
 def run_rotine():
+    
+    any_new_data = False
     data_list = asyncio.run(get_nfes.reload_nfe())
+    
     with open(CACHE_JSON, 'w') as json_cache_file:
          json.dump(data_list, json_cache_file, indent=4)
     access_key_list = [str(d.name) for d in DOWNLOADS_FOLDER.iterdir()]
+    
     for nf in data_list:
             nfe_access_key = nf['access_key']
             if str(nfe_access_key).isnumeric() and all([nfe_access_key not in key for key in access_key_list]):
                 asyncio.run(get_xmls.download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))
                 print(f' Download of {nfe_access_key} is done')
+                any_new_data = True
             else:
                 print("already on downloads folder")
-    asyncio.run(get_pdfs.download_nfe_pdf((DOWNLOADS_FOLDER)))
+    
+    if any_new_data:
+        asyncio.run(get_pdfs.download_nfe_pdf((DOWNLOADS_FOLDER)))
     print('Routine done')
 
 
