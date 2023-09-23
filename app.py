@@ -17,6 +17,7 @@ def display_recent_nfes():
         data_list = json.load(json_cache_file)
     return render_template('index.html', nfelist=data_list)
 
+
 @app.route('/download')
 def download_xml_or_danfe():
     
@@ -31,6 +32,17 @@ def download_xml_or_danfe():
          
     
     return "File not found"
+
+
+@app.route('/search_data')
+def get_searched_file():
+
+    search_key = request.args.get('search_key', False)
+    if search_key:
+        
+        xml_files = [str(xml.name) for xml in DOWNLOADS_FOLDER.iterdir() if str(xml.name).endswith('.xml')]
+        # need to finish 
+
 
 
 if __name__ == '__main__':

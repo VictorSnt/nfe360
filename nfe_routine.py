@@ -25,7 +25,9 @@ def run_rotine():
     for nf in data_list:
             nfe_access_key = nf['access_key']
             if str(nfe_access_key).isnumeric() and all([nfe_access_key not in key for key in access_key_list]):
-                asyncio.run(get_xmls.download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))
+                success = asyncio.run(get_xmls.download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))
+                if not success:
+                     asyncio.run(get_xmls.alternative_download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))
                 print(f' Download of {nfe_access_key} is done')
                 any_new_data = True
             else:
