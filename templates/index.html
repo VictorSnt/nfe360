@@ -22,7 +22,7 @@
             padding: 20px;
         }
 
-        .logo {
+        .logo, a {
             max-width: 300px;
         }
 
@@ -77,56 +77,52 @@
             font-family: 'Poppins', sans-serif;
             color: #333;
         }
-        .filter-form {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #4c89c3;
-        }
+        .custom-date-input, .custom-date-button {
+        border: 1px solid #ccc; /* Cor da borda */
+        border-radius: 20px; /* Borda arredondada */
+        padding: 10px;
+        font-size: 1rem;
+        background: linear-gradient(to bottom, #4c89c3, #65bf68); /* Fundo degradê */
+        color: white; /* Cor do texto */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    }
 
-        .filter-label {
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin-right: 10px;
-        }
+    /* Estilizando o botão */
+    .custom-date-button {
+       
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+        margin-bottom: 10px;
+    }
 
-        .filter-input {
-            width: 200px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .filter-button {
-            background-color: #4c89c3;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-        }
-
-        .filter-button:hover {
-            background-color: #357dbf;
-        }
+    .custom-date-button:hover {
+        background-color: #357dbf;
+    }
     </style>
 </head>
 <body>
 
     <header class="navbar navbar-expand-lg navbar-light bg-light">
-        <img src="static/logo.png" alt="Logo da construfacil" class="logo mx-auto">
+        <a href="/" class="logo mx-auto">
+            <img src="static/logo.png" alt="Logo da construfacil" class="logo mx-auto">
+        </a>
+        
     </header>
 
     <div class="container">
         <h1 class="app-title">Bem-vindo ao Nfe360°</h1>
         
-        <!-- <form class="filter-form" action="/search_data">
-            <label class="filter-label" for="dataFiltro">Filtrar por Data:</label>
-            <input type="date" id="dataFiltro" class="filter-input" name="search_key">
-            <button type="submit" class="filter-button">Filtrar</button>
-        </form> -->
+        <form class="filter-form" action="/search_data" method="get">
+            <label style="color: #357dbf;" class="filter-label" for="dataFiltro"><strong>Filtrar por Data:</strong></label>
+            <input type="date" id="dataFiltro" class="custom-date-input filter-input" name="search_key">
+            <input type="date" id="dataFiltro" class="custom-date-input filter-input" name="search_key2">
+            <button type="submit" class="custom-date-button filter-button">Filtrar</button>
+        </form>
 
         <div class="table-container">
             <table class="table table-bordered">
@@ -135,7 +131,6 @@
                         <th>Razão Social do Emitente</th>
                         <th>CNPJ/CPF</th>
                         <th>Data de Emissão</th>
-                        <th>Tipo de Operação</th>
                         <th>Valor Total da NF-e</th>
                         <th>Download XML</th>
                         <th>Download PDF</th>
@@ -147,7 +142,6 @@
                         <td>{{ nf['Razão Social do Emitente:'] }}</td>
                         <td>{{ nf['CNPJ/CPF:'] }}</td>
                         <td>{{ nf['Data de Emissão: '] }}</td>
-                        <td>{{ nf['Tipo de Operação: '] }}</td>
                         <td>R${{ nf['Valor Total da NF-e: '] }}</td>
                         <td><a href="/download?filename={{ nf['access_key'] }}.xml" class="btn btn-success"><i class="fas fa-download"></i> XML</a></td>
                         <td><a href="/download?filename={{ nf['access_key'] }}.pdf" class="btn btn-danger"><i class="fas fa-download"></i> PDF</a></td>
