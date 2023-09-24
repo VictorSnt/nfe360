@@ -20,15 +20,20 @@ def run_rotine():
     
     with open(CACHE_JSON, 'w') as json_cache_file:
          json.dump(data_list, json_cache_file, indent=4)
-    access_key_list = [str(d.name) for d in DOWNLOADS_FOLDER.iterdir()]
+    access_key_dict = {d.stem: str(d) for d in DOWNLOADS_FOLDER.iterdir() if d.name.endswith('.xml')}
     
     for nf in data_list:
+            
             nfe_access_key = nf['access_key']
-            if str(nfe_access_key).isnumeric() and all([nfe_access_key not in key for key in access_key_list]):
+
+            if str(nfe_access_key).isnumeric() and not access_key_dict.get(nfe_access_key, False):
                 success = asyncio.run(get_xmls.download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))
                 if not success:
-                     asyncio.run(get_xmls.alternative_download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))
-                print(f' Download of {nfe_access_key} is done')
+                    success = asyncio.run(get_xmls.alternative_download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))
+                if success:
+                    print(f' Download of {nfe_access_key} is done')
+                else:
+                    print('error')
                 any_new_data = True
             else:
                 print("already on downloads folder")

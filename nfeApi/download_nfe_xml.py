@@ -7,7 +7,7 @@ async def download_nf_xml(access_key, download_folder):
         filename = access_key + '.xml'
         async with async_playwright() as p:
             browser = await p.chromium.launch(
-                headless=True
+                headless=False
             )
             page = await browser.new_page()
             
@@ -39,30 +39,30 @@ async def alternative_download_nf_xml(access_key, download_folder):
     
     async with async_playwright() as p:
         browser = await p.chromium.launch(
-            headless=True
+            headless=False
         )
         page = await browser.new_page()
         
-        await page.goto('https://consultadanfe.com/')
+        await page.goto('https://meudanfe.com.br/')
         
         async def handle_download(download: Download):    
             filepath = download_folder / filename  
             await download.save_as(filepath)
             page.on("download", handle_download)
 
-            await page.wait_for_selector('#chaveAcessoBusca')
-            await page.click('#chaveAcessoBusca')
-            await page.keyboard.insert_text(access_key)
-            
-            await page.wait_for_selector('a[onclick="searchNfe()"]')
-            await page.click('a[onclick="searchNfe()"]')
+        await page.wait_for_selector('#chaveAcessoBusca')
+        await page.click('#chaveAcessoBusca')
+        await page.keyboard.insert_text(access_key)
+        
+        await page.wait_for_selector('a[onclick="searchNfe()"]')
+        await page.click('a[onclick="searchNfe()"]')
 
-            await page.wait_for_selector('#downloadXml')
-            await page.click('#downloadXml')
-            await asyncio.sleep(5)
-            await page.close()
-            await browser.close()
-
+        await page.wait_for_selector('#downloadXml')
+        await page.click('#downloadXml')
+        await asyncio.sleep(5)
+        await page.close()
+        await browser.close()
+        return True
 
 
 if __name__ == '__main__':
