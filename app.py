@@ -19,7 +19,7 @@ app = Flask(__name__)
 def display_recent_nfes():
     with open(CACHE_JSON, 'r') as json_cache_file:
         data_list = json.load(json_cache_file)
-    return render_template('index.html', nfelist=data_list)
+    return render_template('index.html', nfelist=data_list, arquivo_nao_encontrado=False)
 
 
 @app.route('/download')
@@ -35,7 +35,7 @@ def download_xml_or_danfe():
             return send_file(required_file, as_attachment=True, download_name=filename)
          
     
-    return "File not found"
+    return render_template('index.html', arquivo_nao_encontrado=True)
 
 
 @app.route('/search_data')

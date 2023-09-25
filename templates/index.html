@@ -103,6 +103,11 @@
     .custom-date-button:hover {
         background-color: #357dbf;
     }
+    .error-message {
+            color: red;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -123,7 +128,9 @@
             <input type="date" id="dataFiltro" class="custom-date-input filter-input" name="search_key2">
             <button type="submit" class="custom-date-button filter-button">Filtrar</button>
         </form>
-
+        {% if arquivo_nao_encontrado %}
+        <p class="error-message">O arquivo que você está tentando baixar não foi encontrado na base de dados.</p>
+        {% endif %}
         <div class="table-container">
             <table class="table table-bordered">
                 <thead>
