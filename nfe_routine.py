@@ -27,13 +27,11 @@ def run_rotine():
             nfe_access_key = nf['access_key']
 
             if str(nfe_access_key).isnumeric() and not access_key_dict.get(nfe_access_key, False):
-                success = asyncio.run(get_xmls.download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))
-                if not success:
+                success = asyncio.run(get_xmls.alternative_download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))
+                while not success:
                     success = asyncio.run(get_xmls.alternative_download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))
-                if success:
-                    print(f' Download of {nfe_access_key} is done')
-                else:
-                    print('error')
+                
+                print(f' Download of {nfe_access_key} is done')
                 any_new_data = True
             else:
                 print("already on downloads folder")

@@ -17,12 +17,10 @@ async def download_nf_xml(access_key, download_folder):
             await page.keyboard.insert_text(access_key)
             await page.click('button[class="g-recaptcha"]')
 
-            async def handle_download(download: Download):    
-                filepath = download_folder / filename  
-                await download.save_as(filepath)
-            page.on("download", handle_download)
-
-            await page.click('a[onclick="if (!window.__cfRLUnblockHandlers) return false; return DownXML()"]')   
+            downloadPromise = page.wait_for_event('download')
+            await page.click('a[onclick="if (!window.__cfRLUnblockHandlers) return false; return DownXML()"]')
+            download = await downloadPromise
+            download.save_as(download_folder / filename )
             await asyncio.sleep(5)
             await page.close()
             await browser.close()
@@ -33,37 +31,43 @@ async def download_nf_xml(access_key, download_folder):
 
 
 
+
+
 async def alternative_download_nf_xml(access_key, download_folder):
     
-    filename = access_key + '.xml'
-    
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(
-            headless=False
-        )
-        page = await browser.new_page()
-        
-        await page.goto('https://meudanfe.com.br/')
-        
-        async def handle_download(download: Download):    
-            filepath = download_folder / filename  
-            await download.save_as(filepath)
-            page.on("download", handle_download)
 
-        await page.wait_for_selector('#chaveAcessoBusca')
-        await page.click('#chaveAcessoBusca')
-        await page.keyboard.insert_text(access_key)
-        
-        await page.wait_for_selector('a[onclick="searchNfe()"]')
-        await page.click('a[onclick="searchNfe()"]')
+    try:
+        filename = access_key + '.xml'
 
-        await page.wait_for_selector('#downloadXml')
-        await page.click('#downloadXml')
-        await asyncio.sleep(5)
-        await page.close()
-        await browser.close()
-        return True
+        async with async_playwright() as p:
+            browser = await p.firefox.launch(
+                headless=False
+            )
+            page = await browser.new_page()
 
+            await page.goto('https://meudanfe.com.br/')
+
+            await page.wait_for_selector('#chaveAcessoBusca')
+            await page.click('#chaveAcessoBusca')
+            await page.keyboard.insert_text(access_key)
+
+            await page.wait_for_selector('a[onclick="searchNfe()"]')
+            await page.click('a[onclick="searchNfe()"]')
+
+            await page.wait_for_selector('a[onclick="downloadXml()"]')
+            downloadPromise = page.wait_for_event('download')
+            await page.click('a[onclick="downloadXml()"]')
+            download = await downloadPromise
+            await download.save_as(download_folder / filename )
+         
+            await asyncio.sleep(10)  
+
+            await page.close()
+            await browser.close()
+            return True
+    except Exception as e:
+        print(f"Erro: {str(e)}")
+        return False
 
 if __name__ == '__main__':
     def init_async():
