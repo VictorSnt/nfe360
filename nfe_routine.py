@@ -1,6 +1,7 @@
 from nfeApi import download_nfe_pdf as get_pdfs
 from nfeApi import download_nfe_xml as get_xmls
 from nfeApi import get_nfe as get_nfes
+from xml_manager import format_xml_to_wshop
 from pathlib import Path
 from dotenv import load_dotenv
 import asyncio
@@ -21,6 +22,9 @@ def run_rotine():
     with open(CACHE_JSON, 'w') as json_cache_file:
          json.dump(data_list, json_cache_file, indent=4)
     access_key_dict = {d.stem: str(d) for d in DOWNLOADS_FOLDER.iterdir() if d.name.endswith('.xml')}
+    xml_files = [str(d) for d in DOWNLOADS_FOLDER.iterdir() if d.name.endswith('.xml')]
+    
+    format_xml_to_wshop(xml_files)
     
     for nf in data_list:
             
@@ -30,7 +34,8 @@ def run_rotine():
                 success = asyncio.run(get_xmls.alternative_download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))
                 while not success:
                     success = asyncio.run(get_xmls.alternative_download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))
-                
+                    if not success:
+                      success = asyncio.run(get_xmls.download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER))   
                 print(f' Download of {nfe_access_key} is done')
                 any_new_data = True
             else:

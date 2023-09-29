@@ -7,7 +7,7 @@ async def download_nf_xml(access_key, download_folder):
         filename = access_key + '.xml'
         async with async_playwright() as p:
             browser = await p.chromium.launch(
-                headless=False
+                headless=True
             )
             page = await browser.new_page()
             
@@ -20,7 +20,7 @@ async def download_nf_xml(access_key, download_folder):
             downloadPromise = page.wait_for_event('download')
             await page.click('a[onclick="if (!window.__cfRLUnblockHandlers) return false; return DownXML()"]')
             download = await downloadPromise
-            download.save_as(download_folder / filename )
+            await download.save_as(download_folder / filename )
             await asyncio.sleep(5)
             await page.close()
             await browser.close()
@@ -41,7 +41,7 @@ async def alternative_download_nf_xml(access_key, download_folder):
 
         async with async_playwright() as p:
             browser = await p.firefox.launch(
-                headless=False
+                headless=True
             )
             page = await browser.new_page()
 
