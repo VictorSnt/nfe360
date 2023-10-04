@@ -2,6 +2,7 @@ from nfeApi import download_nfe_pdf as get_pdfs
 from nfeApi import download_nfe_xml as get_xmls
 from nfeApi import get_nfe as get_nfes
 from xml_manager import format_xml_to_wshop
+from files_backup import backup_routine
 from pathlib import Path
 from dotenv import load_dotenv
 import asyncio
@@ -43,6 +44,8 @@ def run_rotine():
     
     if any_new_data:
         asyncio.run(get_pdfs.download_nfe_pdf((DOWNLOADS_FOLDER)))
+        backup_routine()
+    
     print('Routine done')
 
 
