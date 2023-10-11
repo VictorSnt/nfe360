@@ -151,7 +151,7 @@
                         <td>{{ nf['Data de Emissão: '] }}</td>
                         <td>R${{ nf['Valor Total da NF-e: '] }}</td>
                         <td><a href="/download?filename={{ nf['access_key'] }}.xml" class="btn btn-success"><i class="fas fa-download"></i> XML</a></td>
-                        <td><a href="/download?filename={{ nf['access_key'] }}.pdf" class="btn btn-danger"><i class="fas fa-download"></i> PDF</a></td>
+                        <td><a target="_blank" href="/download?filename={{ nf['access_key'] }}.pdf" class="btn btn-danger"><i class="fas fa-download"></i> PDF</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

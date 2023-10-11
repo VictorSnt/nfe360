@@ -31,9 +31,10 @@ def download_xml_or_danfe():
     
         required_file: Path = DOWNLOADS_FOLDER / filename
         
-        if required_file.exists():
+        if required_file.exists() and required_file.name.endswith('.xml'):
             return send_file(required_file, as_attachment=True, download_name=filename)
-         
+        else:
+            return send_file(required_file)
     
     return render_template('index.html', arquivo_nao_encontrado=True)
 
