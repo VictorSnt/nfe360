@@ -11,7 +11,9 @@ import os
 
 load_dotenv()
 DOWNLOADS_FOLDER = Path(os.environ.get('DOWNLOADS_FOLDER', None))
+CANCELEDS_JSON = Path(os.environ.get('CANCELEDS_JSON', None))
 CACHE_JSON = Path(os.environ.get('CACHE_JSON', None))
+
 
 app = Flask(__name__)
 
@@ -38,6 +40,24 @@ def download_xml_or_danfe():
     
     return render_template('index.html', arquivo_nao_encontrado=True)
 
+
+@app.route('/invalidar_nfe')
+def deny_nfe():
+    
+    nfe_key = request.form.get('nfe_key', False)
+    
+    if not CANCELEDS_JSON.exists() or not nfe_key:
+        return 'Não ha cancelados para ser exibidos' if CANCELEDS_JSON is False else 'Não ha chave para cancelar'
+    
+    with open(CANCELEDS_JSON, 'r') as canceleds_json:
+        canceleds_json_data = json.load(canceleds_json)
+    
+    canceleds_json_data['nfe_key'] = True
+
+    with open(CANCELEDS_JSON, 'r') as canceleds_json:
+        json.dump(canceleds_json_data, canceleds_json, indent=4)
+    
+    return redirect('/')
 
 @app.route('/search_data')
 def get_searched_file():

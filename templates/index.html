@@ -100,10 +100,14 @@
         margin-bottom: 10px;
     }
 
+    .em_sistema {
+        color: rgb(26, 95, 26);
+    }
+
     .custom-date-button:hover {
         background-color: #357dbf;
     }
-    .error-message {
+    .error-message, .sistema_pendente {
             color: red;
             font-size: 1.2rem;
             margin-top: 20px;
@@ -136,9 +140,10 @@
                 <thead>
                     <tr>
                         <th>Razão Social do Emitente</th>
-                        <th>CNPJ/CPF</th>
+                        <th>N°</th>
                         <th>Data de Emissão</th>
                         <th>Valor Total da NF-e</th>
+                        <th>Lançado</th>
                         <th>Download XML</th>
                         <th>Download PDF</th>
                     </tr>
@@ -147,11 +152,18 @@
                     {% for nf in nfelist %}
                     <tr>
                         <td>{{ nf['Razão Social do Emitente:'] }}</td>
-                        <td>{{ nf['CNPJ/CPF:'] }}</td>
+                        <td>{{ nf['nfe'] }}</td>
                         <td>{{ nf['Data de Emissão: '] }}</td>
                         <td>R${{ nf['Valor Total da NF-e: '] }}</td>
+                        <td>{% if nf['alterdata'] %} 
+                            <p class="em_sistema">Concluido</p>
+                            {% else %} 
+                            <p class="sistema_pendente">Pendente</p>
+                            {% endif %}
+                        </td>
                         <td><a href="/download?filename={{ nf['access_key'] }}.xml" class="btn btn-success"><i class="fas fa-download"></i> XML</a></td>
                         <td><a target="_blank" href="/download?filename={{ nf['access_key'] }}.pdf" class="btn btn-danger"><i class="fas fa-download"></i> PDF</a></td>
+                        <td><a href="/invalidar_nfe">Invalidar</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

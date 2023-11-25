@@ -10,22 +10,24 @@ async def download_nfe_pdf(downloads_folder):
     async with async_playwright() as p:
         browser = await p.firefox.launch_persistent_context(
             'nfeApi\profile',
-            headless=True
+            headless=False
         )
         
        
         download_file_name = 'danfespack.zip'
         default_fsist_pdf_file = '_JUNTO.pdf'
         page = await browser.new_page()
+        xml_paths = [str(d.absolute()) for d in downloads_folder.iterdir() if str(d.absolute()).endswith('.xml')]
+
         await page.goto('https://www.fsist.com.br/converter-xml-nfe-para-danfe')
 
         await page.wait_for_selector('#arquivolab')
         file_input = page.locator('#arquivolab')
-        xml_paths = [str(d.absolute()) for d in downloads_folder.iterdir() if str(d.absolute()).endswith('.xml')]
-        await file_input.set_input_files(xml_paths)
+        
+        await file_input.set_input_files(xml_paths[-100:])
         
         await page.click('td[style="width: 130px;"]')
-        async def handle_download(download):     
+        async def handle_download(download):  
             filename = downloads_folder / download_file_name
             await download.save_as(filename)
         page.on("download", handle_download)

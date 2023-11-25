@@ -10,7 +10,8 @@ def backup_routine():
     BACKUP_FOLDER = Path(environ.get('BACKUP_FOLDER', None))
 
     if not DOWNLOADS_FOLDER.exists() or not BACKUP_FOLDER.exists():
-        print('pasta n exite') # error handler
+        print('pasta n exite') 
+        return
 
     for file in DOWNLOADS_FOLDER.iterdir():
         copy2(file, BACKUP_FOLDER / file.name)
