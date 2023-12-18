@@ -4,4 +4,4 @@ __pycache__/
 nfe360/backup/
 nfe360/database/nfe360.db
 nfe360/nfeApi/web_scrap_updater/playwright_lib_browser/profile
-
+nfe360/blueprint/static/downloads/**

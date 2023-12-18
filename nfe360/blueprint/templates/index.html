@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem vindo ao Nfe360°</title>
+    <!-- Inclua os links para os arquivos CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Inclua um link para font-awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .logo, a {
+            max-width: 300px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow: hidden;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+        }
+
+        .table {
+            width: 100%;
+            background: linear-gradient(to bottom, #4c89c3, #65bf68);
+            color: white;
+        }
+
+        .table th,
+        .table td {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table th {
+            background-color: transparent;
+        }
+
+        .table th,
+        .table td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .table tbody tr:nth-child(odd) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        
+        .app-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            color: #4c89c3;
+        }
+        .page-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+        .custom-date-input, .custom-date-button {
+        border: 1px solid #ccc; /* Cor da borda */
+        border-radius: 20px; /* Borda arredondada */
+        padding: 10px;
+        font-size: 1rem;
+        background: linear-gradient(to bottom, #4c89c3, #65bf68); /* Fundo degradê */
+        color: white; /* Cor do texto */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    }
+
+    /* Estilizando o botão */
+    .custom-date-button {
+       
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+        margin-bottom: 10px;
+    }
+
+    .em_sistema {
+        color: rgb(26, 95, 26);
+    }
+
+    .custom-date-button:hover {
+        background-color: #357dbf;
+    }
+    .error-message, .sistema_pendente {
+            color: red;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar navbar-expand-lg navbar-light bg-light">
+        <a href="/" class="logo mx-auto">
+            <img src="static/logo.png" alt="Logo da construfacil" class="logo mx-auto">
+        </a>
+        
+    </header>
+
+    <div class="container">
+        <h1 class="app-title">Bem-vindo ao Nfe360°</h1>
+        
+        <form class="filter-form" action="/search_data" method="get">
+            <label style="color: #357dbf;" class="filter-label" for="dataFiltro"><strong>Filtrar por Data:</strong></label>
+            <input type="date" id="dataFiltro" class="custom-date-input filter-input" name="search_key">
+            <input type="date" id="dataFiltro" class="custom-date-input filter-input" name="search_key2">
+            <button type="submit" class="custom-date-button filter-button">Filtrar</button>
+        </form>
+        {% if arquivo_nao_encontrado %}
+        <p class="error-message">O arquivo que você está tentando baixar não foi encontrado na base de dados.</p>
+        {% endif %}
+        <div class="table-container">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Razão Social do Emitente</th>
+                        <th>N°</th>
+                        <th>Data de Emissão</th>
+                        <th>Valor Total da NF-e</th>
+                        <th>Download XML</th>
+                        <th>Download PDF</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for nf in nfelist %}
+                    <tr>
+                        <td>{{ nf['Razão Social do Emitente:'] }}</td>
+                        {% if nf['nfe'] %}
+                        <td>{{ nf['nfe'] }}</td>
+                        {% endif %}
+                        <td>{{ nf['Data de Emissão: '] }}</td>
+                        <td>R${{ nf['Valor Total da NF-e: '] }}</td>
+                        <td>
+                            <form action="/download" method="get">
+                                <input type="hidden" name="filename" value="{{ nf['access_key'] }}.xml">
+                                <button type="submit" class="btn btn-success"><i class="fas fa-download"></i> XML</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/download" method="get">
+                                <input type="hidden" name="filename" value="{{ nf['access_key'] }}.pdf">
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-download"></i> PDF</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="footer mt-auto py-3">
+        <div class="container text-center">
+            <span class="text-muted">© 2023 Victor Santos</span>
+        </div>
+    </footer>
+    <!-- Inclua os links para os arquivos JavaScript do Bootstrap (opcional) -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

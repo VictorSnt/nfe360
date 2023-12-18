@@ -1,5 +1,0 @@
-contile.services.mozilla.com	50	19686	1732399203562,1,0
-aus5.mozilla.org	13	19684	1732306839787,1,0
-location.services.mozilla.com	7	19682	1732122634724,1,1
-spocs.getpocket.com	50	19686	1763938203765,1,0
-www.fsist.com.br^partitionKey=%28https%2Cfsist.com.br%29	40	19686	1732379468721,1,1
