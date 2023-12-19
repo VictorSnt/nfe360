@@ -3,8 +3,8 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 
 
-def format_xml_to_standard(xml_dir: dict):
-    for xml_path in xml_dir.values():
+def format_xml_to_standard(xml_dir: list):
+    for xml_path in xml_dir:
         with open(xml_path, 'r', encoding='utf-8') as xml_file:
             xml_dict = xml_file.read()
         

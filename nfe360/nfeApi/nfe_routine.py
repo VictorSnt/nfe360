@@ -8,82 +8,84 @@ import os
 from nfe360.nfeApi.nfe_downloaders import download_nfe_pdf as get_pdfs
 from nfe360.nfeApi.nfe_downloaders import download_nfe_xml as get_xmls
 from nfe360.nfeApi.web_scrap_updater import update_nfe_list as get_nfes
+from collections import defaultdict
 from nfe360.database.queries import nfe_insert_query
 from nfe360.database.DbConnect import DbConnection
 from nfe360.ext.xml_handler import xml_manager
 from nfe360.models.nfe import Nfe
-from  pathlib import Path
+from pathlib import Path
 
 
-def run_rotine():
-
-    dotenv.load_dotenv()
-    
-    MODULES_PATH = os.environ.get('MODULES_PATH', None)
-    DOWNLOADS_FOLDER =  Path(os.environ.get('DOWNLOADS_FOLDER', None))
-    CACHE_JSON =  Path(os.environ.get('CACHE_JSON', None))
-    DATABASE = Path(os.environ.get('DATABASE', False))
-    sys.path.append(MODULES_PATH)
-    
+def run_download_rotine(db: DbConnection, DOWNLOADS_FOLDER: Path):
    
     data_list = asyncio.run(get_nfes.reload_nfe())
 
-    db = DbConnection(DATABASE)
-    db.connect()
     if db.error: raise db.error
 
     all_nfes: list[Nfe] = db.retrieve_all_nfe() 
     
     for nf in data_list:
             
-            nfe_access_key = nf['access_key']
+            key = nf['access_key']
             
-            if not any([nfe_data.key == nfe_access_key for nfe_data in all_nfes]):     
+            if not any([nfe_data.key == key for nfe_data in all_nfes]):     
                 success = asyncio.run(
-                    get_xmls.alternative_download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER)
+                    get_xmls.alternative_download_nf_xml(
+                        key, DOWNLOADS_FOLDER)
                     )
                 while not success:
                     
                     success = asyncio.run(
-                        get_xmls.alternative_download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER)
+                        get_xmls.alternative_download_nf_xml(
+                            key, DOWNLOADS_FOLDER)
                         )
                     if not success:
                       success = asyncio.run(
-                          get_xmls.download_nf_xml(nfe_access_key, DOWNLOADS_FOLDER)
+                          get_xmls.download_nf_xml(key, DOWNLOADS_FOLDER)
                           )   
-                print(f' Download of {nfe_access_key} is done')
+                print(f' Download of {key} is done')
                 
             else:
                 print("already on downloads folder")
     
-     
-    xml_file_dict = {
-    d.stem: str(d) for d in DOWNLOADS_FOLDER.iterdir() 
-        if d.exists() and d.name.endswith('.xml')
-    }
+    if DOWNLOADS_FOLDER.exists() and any(DOWNLOADS_FOLDER.iterdir()):
+        asyncio.run(get_pdfs.download_nfe_pdf(DOWNLOADS_FOLDER))
 
-    pdf_file_dict = {
-        d.stem: str(d) for d in DOWNLOADS_FOLDER.iterdir() 
-            if d.exists() and d.name.endswith('.pdf')
-        }
+
+def seed_database(db: DbConnection, DOWNLOADS_FOLDER: Path) -> None:
+
+    if db.error: raise db.error
+    if not DOWNLOADS_FOLDER.exists() or not any(DOWNLOADS_FOLDER.iterdir()): return
     
-    if xml_file_dict:
-        asyncio.run(get_pdfs.download_nfe_pdf((DOWNLOADS_FOLDER)))
-        xml_manager.format_xml_to_standard(xml_dir=xml_file_dict)
-        xml_as_dicts = xml_manager.xml_to_dict(DOWNLOADS_FOLDER)
-        
-        for xml_dict in xml_as_dicts:
+    files: defaultdict[str:list[Path]] = defaultdict(list)
+    file_extensions: list[str] = ['.xml', '.pdf']
+    
+    for file in DOWNLOADS_FOLDER.iterdir():
+            if file.exists() and file.suffix in file_extensions:
+                    files[file.stem].append(file)
+    
+    xml_index: int = 1
+    xml_files: list[Path] = [file_list[xml_index] for file_list in files.values()]
+    xml_manager.format_xml_to_standard(xml_dir=xml_files)
+    xml_as_dicts: [list[dict]] = xml_manager.xml_to_dict(DOWNLOADS_FOLDER)
 
-            xml_path = xml_file_dict.get(xml_dict["access_key"], False)
-            pdf_path = pdf_file_dict.get(xml_dict["access_key"], False)
+    for xml_dict in xml_as_dicts:
+        
+        key: str = xml_dict["access_key"]
+        exact_file_quant: int = 2
+        xml_n_danfe: list[Path]|list[None] = files.get(key, [])
+        
+        if len(xml_n_danfe) != exact_file_quant: raise Exception(
+            f'pdf or xml missing\n key:{key}')
+        pdf_path, xml_path = xml_n_danfe
+        
+        with open(xml_path, "rb") as xml, open(pdf_path, "rb") as pdf:
+            xml_binary_data: bytes = xml.read()
+            pdf_binary_data: bytes = pdf.read()
+        
+        arguments = (
             
-            if not xml_path or not pdf_path: continue
-            
-            with open(xml_path, "rb") as xml, open(pdf_path, "rb") as pdf:
-                xml_binary_data = xml.read()
-                pdf_binary_data = pdf.read()
-            
-            arguments = (xml_dict["Raz\u00e3o Social do Emitente:"], 
+            xml_dict["Raz\u00e3o Social do Emitente:"], 
             xml_dict['CNPJ/CPF:'], 
             xml_dict["Data de Emiss\u00e3o: "], 
             xml_dict["Valor Total da NF-e: "],
@@ -93,16 +95,29 @@ def run_rotine():
             False,
             xml_binary_data,
             pdf_binary_data,
-            )
-            db.sqlquery(query=nfe_insert_query, argumensts=arguments, commit=True)
-    
-    else:
-        print('everything was already updated')
-        return
+        )
+        
+        db.sqlquery(query=nfe_insert_query, argumensts=arguments, commit=True)
     db.conn.commit()
+    for d in DOWNLOADS_FOLDER.iterdir():
+        d.unlink()
     
-    # for d in DOWNLOADS_FOLDER.iterdir():
-    #     d.unlink()
+    
+def main():
+     
+    dotenv.load_dotenv()
+    
+    MODULES_PATH = os.environ.get('MODULES_PATH', None)
+    DOWNLOADS_FOLDER =  Path(os.environ.get('DOWNLOADS_FOLDER', None))
+    DATABASE = Path(os.environ.get('DATABASE', False))
+    sys.path.append(MODULES_PATH)
 
-if __name__ == '__main__':
-    run_rotine()
+    db = DbConnection(DATABASE)
+    db.connect()
+
+    run_download_rotine(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER)
+    seed_database(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER)
+
+
+if __name__ == '__main__': 
+    main()
