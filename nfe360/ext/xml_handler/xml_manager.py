@@ -52,6 +52,7 @@ def xml_to_dict(downloads_folder):
         data["CNPJ/CPF:"] = emitent_info['ns0:CNPJ'] 
         data["Data de Emiss\u00e3o: "] = datetime.fromisoformat(nfe_info['ns0:dhRecbto']).astimezone(timezone(timedelta(hours=-3)))
         data["Data de Emiss\u00e3o: "] = data["Data de Emiss\u00e3o: "].strftime('%d/%m/%Y %H:%M:%S')
+        data["Data de Emiss\u00e3o: "] = datetime.strptime(data["Data de Emiss\u00e3o: "], '%d/%m/%Y %H:%M:%S')
         data['access_key'] = nfe_info['ns0:chNFe']
         data['nfe'] = data_dict['ns0:nfeProc']['ns0:NFe']['ns0:infNFe']['ns0:ide']['ns0:nNF']
         xml_info_list.append(data)

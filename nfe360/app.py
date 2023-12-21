@@ -1,31 +1,57 @@
 from flask import Flask, render_template, send_file, request, redirect
+from flask_paginate import Pagination
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import datetime
+from nfe360.database.DbConnect import DbConnection
+from nfe360.models.nfe import Nfe
+from pathlib import Path
 
-
-
+import dotenv
 import json
+import sys
 import os
 
 
 load_dotenv()
 app = Flask(__name__)
-CURRENT_PATH = Path.cwd()
 
-DOWNLOADS_FOLDER = Path(str(CURRENT_PATH) + os.environ.get('DOWNLOADS_FOLDER', None))
-CANCELEDS_JSON = Path(str(CURRENT_PATH) + os.environ.get('CANCELEDS_JSON', None))
-CACHE_JSON = Path(str(CURRENT_PATH) + os.environ.get('CACHE_JSON', None))
+dotenv.load_dotenv()
+    
+ITEMS_PER_PAGE = 5
+MODULES_PATH = os.environ.get('MODULES_PATH', None)
+DOWNLOADS_FOLDER =  Path(os.environ.get('DOWNLOADS_FOLDER', None))
+DATABASE = Path(os.environ.get('DATABASE', False))
+app.static_folder = Path(os.environ.get('STATIC_FOLDER', None)).absolute()
+app.template_folder = Path(os.environ.get('TEMPLATES_FOLDER', None)).absolute()
+sys.path.append(MODULES_PATH)
 
 
-app.static_folder = Path(str(CURRENT_PATH) + os.environ.get('STATIC_FOLDER', None))
-app.template_folder = Path(str(CURRENT_PATH) + os.environ.get('TEMPLATES_FOLDER', None))
+
+
 
 @app.route('/')
 def display_recent_nfes():
-    with open(CACHE_JSON, 'r') as json_cache_file:
-        data_list = json.load(json_cache_file)
-    return render_template('index.html', nfelist=data_list, arquivo_nao_encontrado=False)
+
+    db = DbConnection(DATABASE)
+    db.connect()
+    if db.error: raise db.error
+
+    data_list = db.retrieve_all_nfe()
+    page = request.args.get('page', 1, type=int)
+    
+    start_idx = (page - 1) * ITEMS_PER_PAGE
+    end_idx = start_idx + ITEMS_PER_PAGE
+    paginated_data_list = data_list[start_idx:end_idx]
+    total_pages = (
+        len(data_list) // ITEMS_PER_PAGE + (len(data_list) % ITEMS_PER_PAGE > 0)
+    )
+    pagination = Pagination(
+        page=page, total=len(data_list), 
+        per_page=ITEMS_PER_PAGE, bs_version=4
+    )
+    print(pagination.info)
+    return render_template('index.html', nfelist=paginated_data_list, arquivo_nao_encontrado=False, pagination=pagination)
 
 
 @app.route('/download')

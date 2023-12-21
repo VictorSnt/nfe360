@@ -112,6 +112,7 @@
             font-size: 1.2rem;
             margin-top: 20px;
         }
+
     </style>
 </head>
 <body>
@@ -127,9 +128,8 @@
         <h1 class="app-title">Bem-vindo ao Nfe360°</h1>
         
         <form class="filter-form" action="/search_data" method="get">
-            <label style="color: #357dbf;" class="filter-label" for="dataFiltro"><strong>Filtrar por Data:</strong></label>
-            <input type="date" id="dataFiltro" class="custom-date-input filter-input" name="search_key">
-            <input type="date" id="dataFiltro" class="custom-date-input filter-input" name="search_key2">
+            <label style="color: #357dbf;" class="filter-label" for="dataFiltro"><strong>Buscar</strong></label>
+            <input type="text" id="dataFiltro" class="custom-date-input filter-input" name="search_key">
             <button type="submit" class="custom-date-button filter-button">Filtrar</button>
         </form>
         {% if arquivo_nao_encontrado %}
@@ -150,12 +150,10 @@
                 <tbody>
                     {% for nf in nfelist %}
                     <tr>
-                        <td>{{ nf['Razão Social do Emitente:'] }}</td>
-                        {% if nf['nfe'] %}
-                        <td>{{ nf['nfe'] }}</td>
-                        {% endif %}
-                        <td>{{ nf['Data de Emissão: '] }}</td>
-                        <td>R${{ nf['Valor Total da NF-e: '] }}</td>
+                        <td>{{ nf.issuer }}</td> 
+                        <td>{{ nf.nfenumber }}</td> 
+                        <td>{{ nf.date }}</td>
+                        <td>R${{ nf.nftotal }}</td>
                         <td>
                             <form action="/download" method="get">
                                 <input type="hidden" name="filename" value="{{ nf['access_key'] }}.xml">
@@ -177,6 +175,9 @@
 
     <footer class="footer mt-auto py-3">
         <div class="container text-center">
+            <div class="pagination">
+                {{ pagination.links }}
+            </div>
             <span class="text-muted">© 2023 Victor Santos</span>
         </div>
     </footer>

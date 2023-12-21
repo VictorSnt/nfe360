@@ -55,7 +55,12 @@ class DbConnection:
         
         try:
             
-            retrieve_query = "SELECT * FROM nfes"  
+            retrieve_query = """
+                SELECT *
+FROM nfes
+ORDER BY strftime('%Y-%m-%d %H:%M:%S', date) DESC;
+
+            """ 
             nfes = self.sqlquery(retrieve_query)
             return nfes if nfes else []
         
