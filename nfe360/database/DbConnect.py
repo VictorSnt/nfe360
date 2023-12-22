@@ -1,8 +1,16 @@
 from nfe360.database.queries import create_table_query
+from datetime import datetime
 from nfe360.models.nfe import Nfe
 import sqlite3
 
+def order_by_date(iter):
 
+    iter = [setattr(nf, 'date', datetime.strptime(nf.date, '%d/%m/%Y %H:%M:%S')) or nf 
+             for nf in iter]
+    iter = sorted(iter, key=lambda nf: nf.date, reverse=True)
+    iter = [setattr(nf, 'date', datetime.strftime(nf.date, '%d/%m/%Y %H:%M:%S')) or nf 
+             for nf in iter]
+    return iter
 class DbConnection:
 
     def __init__(self, database: str):
@@ -45,6 +53,7 @@ class DbConnection:
                 columns = [desc[0] for desc in self.cursor.description]
                 rows = self.cursor.fetchall()
                 results_list = [Nfe(**{column: value for column, value in zip(columns, row)}) for row in rows]
+                results_list = order_by_date(results_list)
                 return results_list
 
             except sqlite3.Error as e:
@@ -57,8 +66,8 @@ class DbConnection:
             
             retrieve_query = """
                 SELECT *
-FROM nfes
-ORDER BY strftime('%Y-%m-%d %H:%M:%S', date) DESC;
+                FROM nfes
+                ORDER BY date DESC;
 
             """ 
             nfes = self.sqlquery(retrieve_query)

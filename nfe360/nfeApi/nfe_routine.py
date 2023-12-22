@@ -65,7 +65,11 @@ def seed_database(db: DbConnection, DOWNLOADS_FOLDER: Path) -> None:
                     files[file.stem].append(file)
     
     xml_index: int = 1
-    xml_files: list[Path] = [file_list[xml_index] for file_list in files.values()]
+    xml_files: list[Path] = [
+         
+         file_list[xml_index] for file_list in files.values() 
+         if len(file_list) > 1
+        ]
     xml_manager.format_xml_to_standard(xml_dir=xml_files)
     xml_as_dicts: [list[dict]] = xml_manager.xml_to_dict(DOWNLOADS_FOLDER)
 
@@ -103,7 +107,7 @@ def seed_database(db: DbConnection, DOWNLOADS_FOLDER: Path) -> None:
         d.unlink()
     
     
-def main():
+def main(only_seed=False):
      
     dotenv.load_dotenv()
     
@@ -115,6 +119,10 @@ def main():
     db = DbConnection(DATABASE)
     db.connect()
 
+    if only_seed: 
+        seed_database(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER) 
+        return
+    
     run_download_rotine(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER)
     seed_database(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER)
 

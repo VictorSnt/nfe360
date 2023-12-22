@@ -156,13 +156,13 @@
                         <td>R${{ nf.nftotal }}</td>
                         <td>
                             <form action="/download" method="get">
-                                <input type="hidden" name="filename" value="{{ nf['access_key'] }}.xml">
+                                <input type="hidden" name="filename" value="{{ nf.key }}.xml">
                                 <button type="submit" class="btn btn-success"><i class="fas fa-download"></i> XML</button>
                             </form>
                         </td>
                         <td>
                             <form action="/download" method="get">
-                                <input type="hidden" name="filename" value="{{ nf['access_key'] }}.pdf">
+                                <input type="hidden" name="filename" value="{{ nf.key }}.pdf">
                                 <button type="submit" class="btn btn-danger"><i class="fas fa-download"></i> PDF</button>
                             </form>
                         </td>

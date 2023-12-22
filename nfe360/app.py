@@ -6,6 +6,7 @@ from datetime import datetime
 from nfe360.database.DbConnect import DbConnection
 from nfe360.models.nfe import Nfe
 from pathlib import Path
+from datetime import datetime
 
 import dotenv
 import json
@@ -36,8 +37,9 @@ def display_recent_nfes():
     db = DbConnection(DATABASE)
     db.connect()
     if db.error: raise db.error
-
+    
     data_list = db.retrieve_all_nfe()
+    
     page = request.args.get('page', 1, type=int)
     
     start_idx = (page - 1) * ITEMS_PER_PAGE
@@ -50,24 +52,32 @@ def display_recent_nfes():
         page=page, total=len(data_list), 
         per_page=ITEMS_PER_PAGE, bs_version=4
     )
-    print(pagination.info)
+    db.closeconnection()
     return render_template('index.html', nfelist=paginated_data_list, arquivo_nao_encontrado=False, pagination=pagination)
 
 
 @app.route('/download')
 def download_xml_or_danfe():
     
-    filename = request.args.get('filename', False)
+    filename = Path(request.args.get('filename', False))
     if filename:
-    
-        required_file = DOWNLOADS_FOLDER / filename
-        if required_file.exists() and required_file.name.endswith('.xml'):
-            return send_file(required_file, as_attachment=True, download_name=filename)
-        elif required_file.exists():
-            is_file_sended = send_file(required_file)
-            return is_file_sended
+        
+        db = DbConnection(DATABASE)
+        db.connect()
+        if db.error: raise db.error
+        
+        response = db.sqlquery('SELECT * FROM nfes WHERE key = ?',(filename.stem,))
+        nfe: Nfe = response[0]
+        if filename.suffix == '.xml':
+            required_file = app.static_folder + 'temp.xml'  
+            with open(required_file, 'wb') as file_res:
+                file_res.write(nfe.xmlstring)
+            return send_file(required_file, as_attachment=True, download_name=filename.name)
         else:
-            return render_template('index.html', arquivo_nao_encontrado=True)
+            required_file = app.static_folder + 'temp.pdf'
+            with open(required_file, 'wb') as file_res:
+                file_res.write(nfe.danfebinary)
+            return send_file(required_file)
 
 
 @app.route('/invalidar_nfe')
