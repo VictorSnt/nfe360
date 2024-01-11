@@ -9,7 +9,7 @@ async def reload_nfe():
     async with async_playwright() as p:
         browser = await p.firefox.launch_persistent_context(
             'nfe360/nfeApi/web_scrap_updater/playwright_lib_browser/profile',
-            headless=False
+            headless=True
         )
         
         

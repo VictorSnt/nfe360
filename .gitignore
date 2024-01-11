@@ -1,6 +1,6 @@
 venv/
 __pycache__/
-.env/
+.env
 nfe360/backup/
 nfe360/database/nfe360.db
 nfe360/nfeApi/web_scrap_updater/playwright_lib_browser/profile

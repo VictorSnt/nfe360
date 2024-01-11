@@ -1,20 +1,18 @@
 from flask import Flask, render_template, send_file, request, redirect
 from flask_paginate import Pagination
-from pathlib import Path
-from dotenv import load_dotenv
-from datetime import datetime
+import dotenv
+
 from nfe360.database.DbConnect import DbConnection
 from nfe360.models.nfe import Nfe
-from pathlib import Path
-from datetime import datetime
+from nfe360.database.queries import inaticvate_query
 
-import dotenv
+from datetime import datetime
+from pathlib import Path
 import json
 import sys
 import os
 
 
-load_dotenv()
 app = Flask(__name__)
 
 dotenv.load_dotenv()
@@ -67,6 +65,7 @@ def download_xml_or_danfe():
         if db.error: raise db.error
         
         response = db.sqlquery('SELECT * FROM nfes WHERE key = ?',(filename.stem,))
+        db.closeconnection()
         nfe: Nfe = response[0]
         if filename.suffix == '.xml':
             required_file = app.static_folder + 'temp.xml'  
@@ -80,21 +79,16 @@ def download_xml_or_danfe():
             return send_file(required_file)
 
 
-@app.route('/invalidar_nfe')
+@app.route('/invalidar_nfe', methods=['POST'])
 def deny_nfe():
     
     nfe_key = request.form.get('nfe_key', False)
-    
-    if not CANCELEDS_JSON.exists() or not nfe_key:
-        return 'Não ha cancelados para ser exibidos' if CANCELEDS_JSON is False else 'Não ha chave para cancelar'
-    
-    with open(CANCELEDS_JSON, 'r') as canceleds_json:
-        canceleds_json_data = json.load(canceleds_json)
-    
-    canceleds_json_data['nfe_key'] = True
-
-    with open(CANCELEDS_JSON, 'r') as canceleds_json:
-        json.dump(canceleds_json_data, canceleds_json, indent=4)
+    db = DbConnection(DATABASE)
+    db.connect()
+    if db.error: raise db.error
+    db.sqlquery(inaticvate_query, (nfe_key,), commit=True)
+    db.conn.commit()
+    db.closeconnection()
     
     return redirect('/')
 

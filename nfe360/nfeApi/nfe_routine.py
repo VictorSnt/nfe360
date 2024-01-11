@@ -4,6 +4,7 @@ import dotenv
 import asyncio
 import json
 import os
+from nfe360.database.DbConnectPostgres import DbConnectPostgres
 
 from nfe360.nfeApi.nfe_downloaders import download_nfe_pdf as get_pdfs
 from nfe360.nfeApi.nfe_downloaders import download_nfe_xml as get_xmls
@@ -125,6 +126,34 @@ def main(only_seed=False):
     
     run_download_rotine(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER)
     seed_database(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER)
+    db_alterdata = DbConnectPostgres(
+            os.environ['HOST'],
+            os.environ['PORT'], 
+            os.environ['DBNAME'], 
+            os.environ['USER'], 
+            os.environ['PASSWD']
+        )
+        
+    if not db_alterdata.connect(): 
+        input('Erro ao conectar no banco')
+    
+    nfes: list[Nfe] = db.retrieve_all_nfe()
+    for nf in nfes:
+        print("peguei as nfes")
+        query = f'''
+            SELECT iddocumento FROM wshop.documen
+            WHERE nrdocumento = '{nf.nfenumber}'
+            AND dtreferencia BETWEEN '{nf.date}' AND CURRENT_DATE
+        '''
+        response = db_alterdata.sqlquery(query)
+        
+        if response:
+            db.sqlquery(
+                f"UPDATE nfes SET isregistered = TRUE WHERE key = ?",
+                (nf.key,),
+                commit=True)
+            db.conn.commit()
+            print(db.error)
 
 
 if __name__ == '__main__': 

@@ -25,3 +25,9 @@ nfe_deletion_query: str = """
                         DELETE FROM nfes
                         WHERE key = ?
                 """
+
+inaticvate_query = """
+    UPDATE nfes
+    SET isvalid = FALSE
+    WHERE key = ?
+    """

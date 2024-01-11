@@ -67,6 +67,7 @@ class DbConnection:
             retrieve_query = """
                 SELECT *
                 FROM nfes
+                WHERE isvalid = TRUE
                 ORDER BY date DESC;
 
             """ 

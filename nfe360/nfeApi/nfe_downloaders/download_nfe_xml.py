@@ -7,7 +7,7 @@ async def download_nf_xml(access_key, download_folder):
         filename = access_key + '.xml'
         async with async_playwright() as p:
             browser = await p.chromium.launch(
-                headless=False
+                headless=True
             )
             page = await browser.new_page()
             
@@ -41,7 +41,7 @@ async def alternative_download_nf_xml(access_key, download_folder):
 
         async with async_playwright() as p:
             browser = await p.firefox.launch(
-                headless=False
+                headless=True
             )
             page = await browser.new_page()
 
