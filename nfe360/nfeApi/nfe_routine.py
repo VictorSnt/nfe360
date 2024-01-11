@@ -139,11 +139,10 @@ def main(only_seed=False):
     
     nfes: list[Nfe] = db.retrieve_all_nfe()
     for nf in nfes:
-        print("peguei as nfes")
+        
         query = f'''
-            SELECT iddocumento FROM wshop.documen
-            WHERE nrdocumento = '{nf.nfenumber}'
-            AND dtreferencia BETWEEN '{nf.date}' AND CURRENT_DATE
+            SELECT * FROM wshop.documento_nfe
+            WHERE chaveacesso = '{nf.key}'
         '''
         response = db_alterdata.sqlquery(query)
         
@@ -153,8 +152,7 @@ def main(only_seed=False):
                 (nf.key,),
                 commit=True)
             db.conn.commit()
-            print(db.error)
-
+            
 
 if __name__ == '__main__': 
     main()

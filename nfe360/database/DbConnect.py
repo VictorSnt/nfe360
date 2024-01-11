@@ -60,7 +60,7 @@ class DbConnection:
                 self.error = e
 
 
-    def retrieve_all_nfe(self):
+    def retrieve_all_valid_nfe(self):
         
         try:
             
@@ -77,6 +77,21 @@ class DbConnection:
         except sqlite3.Error as e:
             self.error = e
 
+    def retrieve_all_nfe(self):
+        
+        try:
+            
+            retrieve_query = """
+                SELECT *
+                FROM nfes
+                ORDER BY date DESC;
+
+            """ 
+            nfes = self.sqlquery(retrieve_query)
+            return nfes if nfes else []
+        
+        except sqlite3.Error as e:
+            self.error = e
 
     def closeconnection(self) -> bool:
 

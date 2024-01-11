@@ -10,151 +10,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
+    <link rel="stylesheet" href="/static/css/index.css">
 
-        .logo, a {
-            max-width: 300px;
-        }
-
-        .table-container {
-            width: 100%;
-            overflow: hidden;
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-        }
-
-        .table {
-            width: 100%;
-            background: linear-gradient(to bottom, #4c89c3, #65bf68);
-            color: white;
-        }
-
-        .table th,
-        .table td {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .table th {
-            background-color: transparent;
-        }
-
-        .table th,
-        .table td {
-            padding: 10px;
-            text-align: center;
-        }
-
-        .table tbody tr:nth-child(odd) {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .table tbody tr:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            transition: background-color 0.3s ease;
-        }
-        
-        .app-title {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            font-family: 'Poppins', sans-serif;
-            color: #4c89c3;
-        }
-        .page-title {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            font-family: 'Poppins', sans-serif;
-            color: #333;
-        }
-        .custom-date-input, .custom-date-button {
-        border: 1px solid #ccc; /* Cor da borda */
-        border-radius: 20px; /* Borda arredondada */
-        padding: 10px;
-        font-size: 1rem;
-        background: linear-gradient(to bottom, #4c89c3, #65bf68); /* Fundo degradê */
-        color: white; /* Cor do texto */
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
-    }
-
-    /* Estilizando o botão */
-    .custom-date-button {
-       
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: px;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background-color 0.3s ease;
-        margin-bottom: 10px;
-    }
-
-    .em_sistema {
-        color: rgb(26, 95, 26);
-    }
-
-    .custom-date-button:hover {
-        background-color: #357dbf;
-    }
-    .error-message, .sistema_pendente {
-            color: red;
-            font-size: 1.2rem;
-            margin-top: 20px;
-    }
-    #modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.7); /* Fundo escuro semitransparente */
-        justify-content: center;
-        align-items: center;
-    }
-
-    #modal-content {
-        background: #fff; /* Fundo branco */
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra suave */
-        text-align: center;
-    }
-
-    #modal-content h2 {
-    color: #333; /* Cor do texto */
-    }
-
-    .openModal {
-
-        display: inline-block;
-        padding: 10px 20px;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-        text-decoration: none;
-        cursor: pointer;
-        background-color: #f00; /* Cor de fundo vermelha */
-        color: #fff; /* Cor do texto branca */
-        border: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-    </style>
 </head>
 <body>
-
+  
     <header class="navbar navbar-expand-lg navbar-light bg-light">
         <a href="/" class="logo mx-auto">
             <img src="static/logo.png" alt="Logo da construfacil" class="logo mx-auto">
@@ -211,14 +71,15 @@
                             {% if nf.isregistered %}
                                 &#10004; 
                             {% else %}
-                                &#10008; 
+                                <span class="red-x">&#10008;</span> 
                             {% endif %}
+                            
                         </td>
                         <td>
                             <form action="/invalidar_nfe" method="post">
                                 <input type="hidden" name="_method" value="PUT">
                                 <input name="nfe_key" type="hidden" value="{{ nf.key }}">
-                                <button class="openModal">Invalidar</button>
+                                <button class="openModal">Inativar</button>
                             </form>
                         </td>
 
@@ -239,58 +100,16 @@
     </footer>
     <div id="modal">
         <div id="modal-content">
-          <p>Digite a senha:</p>
-          <input type="password" id="passwordInput">
-          <button onclick="checkPassword()">Confirmar</button>
-          <button onclick="closeModal()">Cancelar</button>
+            <p>Digite a senha:</p>
+            <input type="password" id="passwordInput" class="senha-input">
+            <button onclick="checkPassword()" class="confirmar-button">Confirmar</button>
+            <button onclick="closeModal()" class="cancelar-button">Cancelar</button>
         </div>
-      </div>
-    <!-- Inclua os links para os arquivos JavaScript do Bootstrap (opcional) -->
+    </div>
+    
+    
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        // Armazena a referência ao evento original
-        var originalButton;
-      
-        // Função para abrir o modal
-        function openModal(event) {
-          originalButton = event;  // Armazena o evento original
-          document.getElementById('modal').style.display = 'flex';
-        }
-      
-        // Função para fechar o modal
-        function closeModal() {
-          document.getElementById('modal').style.display = 'none';
-        }
-      
-        // Função para verificar a senha
-        function checkPassword() {
-          var password = document.getElementById('passwordInput').value;
-
-          if (password === '6430') {
-            console.log('Senha correta!');
-            closeModal();
-            let form = originalButton.closest('form');
-            if (form) {
-                
-                form.submit();
-                alert('Invalidada com sucesso! Sera excluida da listagem na proxima atualização de notas')
-            } else {
-                console.error('Formulário não encontrado.');
-            }
-          } else {
-            alert('Senha incorreta. Tente novamente.');
-          }
-        }
-      
-        document.addEventListener('DOMContentLoaded', function () {
-          let buttons = document.getElementsByClassName('openModal');
-          Array.from(buttons).forEach(element => {
-            element.addEventListener('click', function (event) {
-              event.preventDefault();
-              openModal(element);
-            });
-          });
-        });
-      </script>
+    <script src="/static/js/main.js"></script>
+    
 </body>
 </html>

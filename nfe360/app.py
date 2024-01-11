@@ -36,7 +36,7 @@ def display_recent_nfes():
     db.connect()
     if db.error: raise db.error
     
-    data_list = db.retrieve_all_nfe()
+    data_list = db.retrieve_all_valid_nfe()
     
     page = request.args.get('page', 1, type=int)
     
@@ -51,7 +51,13 @@ def display_recent_nfes():
         per_page=ITEMS_PER_PAGE, bs_version=4
     )
     db.closeconnection()
-    return render_template('index.html', nfelist=paginated_data_list, arquivo_nao_encontrado=False, pagination=pagination)
+    return render_template(
+        
+        'index.html', 
+        nfelist=paginated_data_list, 
+        arquivo_nao_encontrado=False, 
+        pagination=pagination
+    )
 
 
 @app.route('/download')
@@ -67,11 +73,19 @@ def download_xml_or_danfe():
         response = db.sqlquery('SELECT * FROM nfes WHERE key = ?',(filename.stem,))
         db.closeconnection()
         nfe: Nfe = response[0]
+        
         if filename.suffix == '.xml':
+            
             required_file = app.static_folder + 'temp.xml'  
             with open(required_file, 'wb') as file_res:
                 file_res.write(nfe.xmlstring)
-            return send_file(required_file, as_attachment=True, download_name=filename.name)
+                   
+            return send_file(
+                required_file, 
+                as_attachment=True, 
+                download_name=filename.name
+            )
+            
         else:
             required_file = app.static_folder + 'temp.pdf'
             with open(required_file, 'wb') as file_res:
