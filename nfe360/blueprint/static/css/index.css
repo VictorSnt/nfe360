@@ -182,3 +182,144 @@ background-color: #357dbf;
 .red-x {
     color: red;
 }
+body {
+    background-color: #f8f9fa;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+header {
+    background-color: #f8f9fa;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-height: 200px;
+}
+
+.logo img {
+    max-width: 100%;
+    height: 150px;
+    
+}
+
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    margin-left: 100px;
+    padding: 0;
+}
+
+.nav-item {
+    margin-right: 15px;
+}
+
+.nav-item a {
+    text-decoration: none;
+    color: #4c89c3; 
+    font-weight: bold; 
+    font-size: 16px;
+    display: flex;
+}
+
+.nav-item a:hover {
+    color: #357dbf; 
+}
+
+body {
+    background-color: #f8f9fa;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.logo, a {
+    max-width: 100%; /* Adjusted for responsiveness */
+}
+
+.table-container {
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+}
+
+.table {
+    width: 100%;
+    background: linear-gradient(to bottom, #4c89c3, #65bf68);
+    color: white;
+}
+
+/* ... (unchanged styles for the table) ... */
+
+.custom-date-input, .custom-date-button {
+    /* ... (unchanged styles for date input and button) ... */
+}
+
+@media (max-width: 768px) {
+    /* Adjust styles for screens up to 768px wide */
+    .container {
+        padding: 10px;
+    }
+
+    .nav-list {
+        margin-left: 20px;
+    }
+
+    .nav-item {
+        margin-right: 10px;
+    }
+
+    header {
+        padding: 10px;
+        max-height: 150px;
+    }
+
+    .logo img {
+        height: 100px;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Adjust styles for screens up to 576px wide */
+    .container {
+        padding: 5px;
+    }
+
+    .nav-list {
+        margin-left: 10px;
+    }
+
+    .nav-item {
+        margin-right: 5px;
+    }
+
+    header {
+        padding: 5px;
+        max-height: 120px;
+    }
+
+    .logo img {
+        height: 80px;
+    }
+
+    .app-title {
+        font-size: 2rem;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    .custom-date-input, .custom-date-button {
+        font-size: 0.9rem;
+    }
+}

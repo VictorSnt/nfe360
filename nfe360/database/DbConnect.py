@@ -70,14 +70,29 @@ class DbConnection:
                 self.error = e
 
 
-    def retrieve_all_valid_nfe(self) -> list[Nfe]:
+    def retrieve_all_valid_nfe(self, registered='all') -> list[Nfe]:
         
         try:
-            
-            retrieve_query = """
+            if registered == 'all':
+                
+                retrieve_query = """
+                    SELECT *
+                    FROM nfes
+                    ORDER BY date DESC;
+                """ 
+            elif registered == '0':
+                retrieve_query = """
+                    SELECT *
+                    FROM nfes
+                    WHERE isvalid = FALSE
+                    ORDER BY date DESC;
+                """ 
+                
+            else:      
+                retrieve_query = f"""
                 SELECT *
                 FROM nfes
-                WHERE isvalid = TRUE
+                WHERE isregistered = {registered}
                 ORDER BY date DESC;
 
             """ 
@@ -85,8 +100,7 @@ class DbConnection:
             if not nfes:
                 
                 raise ValueError(
-                    "Nenhuma nota fiscal registrada, verifique se a rotina"+
-                    "de conferencia esta funcionando corretamente")
+                    "Nenhuma nota fiscal registrada, \"routine\" esta em execução?")
                 
             return nfes 
         

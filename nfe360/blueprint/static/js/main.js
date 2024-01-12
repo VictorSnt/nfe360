@@ -37,4 +37,18 @@ var originalButton;
               openModal(element);
             });
           });
+          
+          const navItens = document.querySelectorAll('.nav-item');
+          const navbarCollapse = document.querySelector('#nav_colapse');
+
+          navbarCollapse.addEventListener('click', function() {
+            
+            navItens.forEach(item => {
+              console.log(item.textContent)
+              item.style.display = "flex";
+            })
         });
+        });
+
+     
+        
