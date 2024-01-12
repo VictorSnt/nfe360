@@ -95,6 +95,7 @@ class DbConnection:
                 SELECT *
                 FROM nfes
                 WHERE isregistered = {registered}
+                AND isvalid = TRUE
                 ORDER BY date DESC;
                 """ 
                 
