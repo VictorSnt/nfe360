@@ -31,7 +31,11 @@ class DbConnection:
             self.error: sqlite3.Error = e
             
 
-    def sqlquery(self, query: str, argumensts: bool|tuple[any]=False, commit: bool=False) -> list | None:
+    def sqlquery(
+            self, 
+            query: str, 
+            argumensts: bool|tuple[any]=False, 
+            commit: bool=False) -> list[Nfe]|None:
 
         if not self.cursor:
             
@@ -60,7 +64,7 @@ class DbConnection:
                 self.error = e
 
 
-    def retrieve_all_valid_nfe(self):
+    def retrieve_all_valid_nfe(self) -> list[Nfe]:
         
         try:
             
