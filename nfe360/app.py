@@ -46,6 +46,7 @@ def display_recent_nfes():
     total_pages = (
         len(data_list) // ITEMS_PER_PAGE + (len(data_list) % ITEMS_PER_PAGE > 0)
     )
+    
     pagination = Pagination(
         page=page, total=len(data_list), 
         per_page=ITEMS_PER_PAGE, bs_version=4
@@ -95,7 +96,8 @@ def download_xml_or_danfe():
 
 @app.route('/invalidar_nfe', methods=['POST'])
 def deny_nfe():
-    
+
+    page = request.form.get('page', 1, type=int)
     nfe_key = request.form.get('nfe_key', False)
     db = DbConnection(DATABASE)
     db.connect()
@@ -104,7 +106,7 @@ def deny_nfe():
     db.conn.commit()
     db.closeconnection()
     
-    return redirect('/')
+    return redirect(f'/?page={page}')
 
 @app.route('/search_data')
 def get_searched_file():
