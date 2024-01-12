@@ -78,6 +78,7 @@
                         <td>
                             <form action="/invalidar_nfe" method="post">
                                 <input type="hidden" name="_method" value="PUT">
+                                <input type="hidden" name="page" value="{{request.args.get('page')}}">
                                 <input name="nfe_key" type="hidden" value="{{ nf.key }}">
                                 <button class="openModal">Inativar</button>
                             </form>

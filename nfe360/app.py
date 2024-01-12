@@ -1,7 +1,8 @@
-from flask import Flask, render_template, send_file, request, redirect
+from flask import Flask, render_template, request, redirect
 import dotenv
 
 from nfe360.database.queries import inaticvate_query, get_from_key
+from nfe360.util.send_file import handler_file_type
 from nfe360.database.DbConnect import DbConnection
 from nfe360.util.database import make_db_conection
 from nfe360.util.pagination import paginate
@@ -11,18 +12,6 @@ from datetime import datetime
 from pathlib import Path
 import sys
 import os
-
-from nfe360.util.send_file import handler_file_type
-
-
-
-
-
-
-
-
-
-
 
 
 app = Flask(__name__)
@@ -36,9 +25,6 @@ DATABASE = Path(os.environ.get('DATABASE', False))
 app.static_folder = Path(os.environ.get('STATIC_FOLDER', None)).absolute()
 app.template_folder = Path(os.environ.get('TEMPLATES_FOLDER', None)).absolute()
 sys.path.append(MODULES_PATH)
-
-
-
 
 
 @app.route('/')
@@ -61,12 +47,9 @@ def display_recent_nfes() -> str:
     except Exception as e:
         return render_template('error.html', error=str(e))
     
-<<<<<<< HEAD
-    
-=======
     finally:
         db.closeconnection()
->>>>>>> eb57f48ae015aaa2cbc66ca9d8690dc03a79e13d
+
 
 
 @app.route('/download')
