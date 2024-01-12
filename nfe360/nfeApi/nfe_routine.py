@@ -21,9 +21,8 @@ def run_download_rotine(db: DbConnection, DOWNLOADS_FOLDER: Path):
    
     data_list = asyncio.run(get_nfes.reload_nfe())
 
-    if db.error: raise db.error
-
-    all_nfes: list[Nfe] = db.retrieve_all_nfe() 
+    with db.connect():
+        all_nfes: list[Nfe] = db.retrieve_all_nfe() 
     
     for nf in data_list:
             
@@ -55,57 +54,57 @@ def run_download_rotine(db: DbConnection, DOWNLOADS_FOLDER: Path):
 
 def seed_database(db: DbConnection, DOWNLOADS_FOLDER: Path) -> None:
 
-    if db.error: raise db.error
-    if not DOWNLOADS_FOLDER.exists() or not any(DOWNLOADS_FOLDER.iterdir()): return
-    
-    files: defaultdict[str:list[Path]] = defaultdict(list)
-    file_extensions: list[str] = ['.xml', '.pdf']
-    
-    for file in DOWNLOADS_FOLDER.iterdir():
-            if file.exists() and file.suffix in file_extensions:
-                    files[file.stem].append(file)
-    
-    xml_index: int = 1
-    xml_files: list[Path] = [
-         
-         file_list[xml_index] for file_list in files.values() 
-         if len(file_list) > 1
-        ]
-    xml_manager.format_xml_to_standard(xml_dir=xml_files)
-    xml_as_dicts: [list[dict]] = xml_manager.xml_to_dict(DOWNLOADS_FOLDER)
-
-    for xml_dict in xml_as_dicts:
+    with db.connect():
+        if not DOWNLOADS_FOLDER.exists() or not any(DOWNLOADS_FOLDER.iterdir()): return
         
-        key: str = xml_dict["access_key"]
-        exact_file_quant: int = 2
-        xml_n_danfe: list[Path]|list[None] = files.get(key, [])
+        files: defaultdict[str:list[Path]] = defaultdict(list)
+        file_extensions: list[str] = ['.xml', '.pdf']
         
-        if len(xml_n_danfe) != exact_file_quant: raise Exception(
-            f'pdf or xml missing\n key:{key}')
-        pdf_path, xml_path = xml_n_danfe
+        for file in DOWNLOADS_FOLDER.iterdir():
+                if file.exists() and file.suffix in file_extensions:
+                        files[file.stem].append(file)
         
-        with open(xml_path, "rb") as xml, open(pdf_path, "rb") as pdf:
-            xml_binary_data: bytes = xml.read()
-            pdf_binary_data: bytes = pdf.read()
-        
-        arguments = (
+        xml_index: int = 1
+        xml_files: list[Path] = [
             
-            xml_dict["Raz\u00e3o Social do Emitente:"], 
-            xml_dict['CNPJ/CPF:'], 
-            xml_dict["Data de Emiss\u00e3o: "], 
-            xml_dict["Valor Total da NF-e: "],
-            xml_dict["access_key"],
-            xml_dict["nfe"],
-            True,
-            False,
-            xml_binary_data,
-            pdf_binary_data,
-        )
-        
-        db.sqlquery(query=nfe_insert_query, argumensts=arguments, commit=True)
-    db.conn.commit()
-    for d in DOWNLOADS_FOLDER.iterdir():
-        d.unlink()
+            file_list[xml_index] for file_list in files.values() 
+            if len(file_list) > 1
+            ]
+        xml_manager.format_xml_to_standard(xml_dir=xml_files)
+        xml_as_dicts: [list[dict]] = xml_manager.xml_to_dict(DOWNLOADS_FOLDER)
+
+        for xml_dict in xml_as_dicts:
+            
+            key: str = xml_dict["access_key"]
+            exact_file_quant: int = 2
+            xml_n_danfe: list[Path]|list[None] = files.get(key, [])
+            
+            if len(xml_n_danfe) != exact_file_quant: raise Exception(
+                f'pdf or xml missing\n key:{key}')
+            pdf_path, xml_path = xml_n_danfe
+            
+            with open(xml_path, "rb") as xml, open(pdf_path, "rb") as pdf:
+                xml_binary_data: bytes = xml.read()
+                pdf_binary_data: bytes = pdf.read()
+            
+            arguments = (
+                
+                xml_dict["Raz\u00e3o Social do Emitente:"], 
+                xml_dict['CNPJ/CPF:'], 
+                xml_dict["Data de Emiss\u00e3o: "], 
+                xml_dict["Valor Total da NF-e: "],
+                xml_dict["access_key"],
+                xml_dict["nfe"],
+                True,
+                False,
+                xml_binary_data,
+                pdf_binary_data,
+            )
+            
+            db.sqlquery(query=nfe_insert_query, argumensts=arguments, commit=True)
+        db.conn.commit()
+        for d in DOWNLOADS_FOLDER.iterdir():
+            d.unlink()
     
     
 def main(only_seed=False):
@@ -118,7 +117,7 @@ def main(only_seed=False):
     sys.path.append(MODULES_PATH)
 
     db = DbConnection(DATABASE)
-    db.connect()
+    
 
     if only_seed: 
         seed_database(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER) 
@@ -133,25 +132,22 @@ def main(only_seed=False):
             os.environ['USER'], 
             os.environ['PASSWD']
         )
-        
-    if not db_alterdata.connect(): 
-        input('Erro ao conectar no banco')
-    
-    nfes: list[Nfe] = db.retrieve_all_nfe()
-    for nf in nfes:
-        
-        query = f'''
-            SELECT * FROM wshop.documento_nfe
-            WHERE chaveacesso = '{nf.key}'
-        '''
-        response = db_alterdata.sqlquery(query)
-        
-        if response:
-            db.sqlquery(
-                f"UPDATE nfes SET isregistered = TRUE WHERE key = ?",
-                (nf.key,),
-                commit=True)
-            db.conn.commit()
+    with db.connect():    
+        nfes: list[Nfe] = db.retrieve_all_nfe()
+        for nf in nfes:
+            
+            query = f'''
+                SELECT * FROM wshop.documento_nfe
+                WHERE chaveacesso = '{nf.key}'
+            '''
+            response = db_alterdata.sqlquery(query)
+            
+            if response:
+                db.sqlquery(
+                    f"UPDATE nfes SET isregistered = TRUE WHERE key = ?",
+                    (nf.key,),
+                    commit=True)
+                db.conn.commit()
             
 
 if __name__ == '__main__': 
