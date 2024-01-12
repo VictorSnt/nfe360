@@ -79,9 +79,6 @@ def deny_nfe():
         db = make_db_conection(db_path)
         
         with db.connect():
-            def trace_callback(statement):
-                print(f"Query Executada: {statement}")
-            db.conn.set_trace_callback(trace_callback)
             db.sqlquery(inaticvate_query, (nfe_key,), commit=True)
             db.conn.commit()
 

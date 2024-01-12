@@ -1,54 +1,51 @@
 var originalButton;
-        function openModal(event) {
-          originalButton = event;  
-          document.getElementById('modal').style.display = 'flex';
-        }
-      
-        
-        function closeModal() {
-          document.getElementById('modal').style.display = 'none';
-        }
-      
-        
-        function checkPassword() {
-          var password = document.getElementById('passwordInput').value;
 
-          if (password === '6430') {
-            console.log('Senha correta!');
-            closeModal();
-            let form = originalButton.closest('form');
-            if (form) {
-                
-                form.submit();
-                
-            } else {
-                console.error('Formulário não encontrado.');
-            }
-          } else {
-            alert('Senha incorreta. Tente novamente.');
-          }
-        }
-      
-        document.addEventListener('DOMContentLoaded', function () {
-          let buttons = document.getElementsByClassName('openModal');
-          Array.from(buttons).forEach(element => {
-            element.addEventListener('click', function (event) {
-              event.preventDefault();
-              openModal(element);
-            });
-          });
-          
-          const navItens = document.querySelectorAll('.nav-item');
-          const navbarCollapse = document.querySelector('#nav_colapse');
+function openModal(event) {
 
-          navbarCollapse.addEventListener('click', function() {
-            
-            navItens.forEach(item => {
-              console.log(item.textContent)
-              item.style.display = "flex";
-            })
-        });
-        });
+  originalButton = event;  
+  document.getElementById('modal').style.display = 'flex';
+  document.querySelector('.senha-input').focus();
+  document.querySelector('.senha-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+          checkPassword();
+      }
+  });
+}
 
-     
+
+
+function closeModal() {
+  document.getElementById('modal').style.display = 'none';
+}
+
+
+function checkPassword() {
+  var password = document.getElementById('passwordInput').value;
+
+  if (password === '64303251') {
+    closeModal();
+    let form = originalButton.closest('form');
+    if (form) {
         
+        form.submit();
+        
+    } else {
+        console.error('Formulário não encontrado.');
+    }
+  } else {
+    alert('Senha incorreta. Tente novamente.');
+    document.querySelector('.senha-input').value = '';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  let buttons = document.getElementsByClassName('openModal');
+  Array.from(buttons).forEach(element => {
+    element.addEventListener('click', function (event) {
+      event.preventDefault();
+      openModal(element);
+    });
+  });
+});
+
+
