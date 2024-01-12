@@ -13,9 +13,7 @@ from pathlib import Path
 import sys
 import os
 
-
 app = Flask(__name__)
-
 dotenv.load_dotenv()
     
 
@@ -33,7 +31,10 @@ def display_recent_nfes() -> str:
     try:
         db_path = DATABASE
         db = make_db_conection(db_path)
-        data_list = db.retrieve_all_valid_nfe()
+        
+        with db.connect():
+            data_list = db.retrieve_all_valid_nfe()
+        
         page: int = request.args.get('page', 1, type=int)
         pagination, paginated_data_list = paginate(page, data_list)
 
@@ -46,45 +47,39 @@ def display_recent_nfes() -> str:
     
     except Exception as e:
         return render_template('error.html', error=str(e))
-    
-    finally:
-        db.closeconnection()
-
-
-
+        
 @app.route('/download')
 def download_xml_or_danfe():
     
     try:
         
-        filename = Path(request.args.get('filename', False))    
+          
         db_path = DATABASE
         db = make_db_conection(db_path)
-        wraped_nfe = db.sqlquery(get_from_key,(filename.stem,))
+        filename = Path(request.args.get('filename', False))
+         
+        with db.connect():
+            wraped_nfe = db.sqlquery(get_from_key,(filename.stem,))
+        
         response = handler_file_type(app, filename, wraped_nfe)
         
         return response
         
     except Exception as e:
         return render_template('error.html', error=str(e))
-    
-    finally:
-        if db:
-            db.closeconnection()
-
+        
 @app.route('/invalidar_nfe', methods=['POST'])
 def deny_nfe():
-
-    page = request.form.get('page', 1, type=int)
-    nfe_key = request.form.get('nfe_key', False)
-    db = DbConnection(DATABASE)
-    db.connect()
-    if db.error: raise db.error
-    db.sqlquery(inaticvate_query, (nfe_key,), commit=True)
-    db.conn.commit()
-    db.closeconnection()
     
-    return redirect(f'/?page={page}')
+    nfe_key = request.form.get('nfe_key', False)
+    db_path = DATABASE
+    db = make_db_conection(db_path)
+    
+    with db.connect():
+        db.sqlquery(inaticvate_query, (nfe_key,), commit=True)
+        db.conn.commit()
+    
+    return redirect('/')
 
 @app.route('/search_data')
 def get_searched_file():

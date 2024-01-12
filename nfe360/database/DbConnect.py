@@ -1,7 +1,11 @@
+from typing import Type
 from nfe360.database.queries import create_table_query
-from datetime import datetime
 from nfe360.models.nfe import Nfe
+
+from contextlib import _GeneratorContextManager, contextmanager
+from datetime import datetime
 import sqlite3
+
 
 def order_by_date(iter):
 
@@ -19,16 +23,18 @@ class DbConnection:
         self.conn = None
         self.cursor = None
 
-    def connect(self) -> None:
+    @contextmanager
+    def connect(self) -> Type["DbConnection"]:
         try:
-
-            self.conn: sqlite3.Connection = sqlite3.connect(self.database)
-            self.cursor: sqlite3.Cursor = self.conn.cursor()
+            self.conn = sqlite3.connect(self.database)
+            self.cursor = self.conn.cursor()
             self.cursor.execute(create_table_query)
             self.conn.commit()
-        
+            yield self  
         except sqlite3.Error as e:
-            self.error: sqlite3.Error = e
+            raise e
+        finally:
+            self.closeconnection()
             
 
     def sqlquery(
@@ -76,10 +82,16 @@ class DbConnection:
 
             """ 
             nfes = self.sqlquery(retrieve_query)
-            return nfes if nfes else []
+            if not nfes:
+                
+                raise ValueError(
+                    "Nenhuma nota fiscal registrada, verifique se a rotina"+
+                    "de conferencia esta funcionando corretamente")
+                
+            return nfes 
         
         except sqlite3.Error as e:
-            self.error = e
+            raise e
 
     def retrieve_all_nfe(self):
         
