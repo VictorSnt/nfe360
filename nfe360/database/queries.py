@@ -31,3 +31,5 @@ inaticvate_query = """
     SET isvalid = FALSE
     WHERE key = ?
     """
+
+get_from_key = 'SELECT * FROM nfes WHERE key = ?'
