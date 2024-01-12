@@ -30,8 +30,11 @@ def display_recent_nfes() -> str:
         db_path = DATABASE
         db = make_db_conection(db_path)
         registered = request.args.get('isregistered', 'all')
+        search_key = request.args.get('search_key', False)
+        print(search_key)
+        
         with db.connect():
-            data_list = db.retrieve_all_valid_nfe(registered)
+            data_list = db.retrieve_all_valid_nfe(registered, search_key)
         
         page: int = request.args.get('page', 1, type=int)
         pagination, paginated_data_list = paginate(page, data_list)

@@ -2,9 +2,11 @@ from typing import Type
 from nfe360.database.queries import create_table_query
 from nfe360.models.nfe import Nfe
 
-from contextlib import _GeneratorContextManager, contextmanager
+from contextlib import contextmanager
 from datetime import datetime
 import sqlite3
+
+from nfe360.util.search_logic import buscar_string
 
 
 def order_by_date(iter):
@@ -70,7 +72,7 @@ class DbConnection:
                 self.error = e
 
 
-    def retrieve_all_valid_nfe(self, registered='all') -> list[Nfe]:
+    def retrieve_all_valid_nfe(self, registered='all', search_key=False) -> list[Nfe]:
         
         try:
             if registered == 'all':
@@ -94,14 +96,17 @@ class DbConnection:
                 FROM nfes
                 WHERE isregistered = {registered}
                 ORDER BY date DESC;
-
-            """ 
-            nfes = self.sqlquery(retrieve_query)
-            if not nfes:
+                """ 
                 
+            nfes = self.sqlquery(retrieve_query)
+            
+            if not nfes:    
                 raise ValueError(
                     "Nenhuma nota fiscal registrada, \"routine\" esta em execução?")
                 
+            if search_key:
+                nfes = order_by_date(buscar_string(nfes, search_key))
+            
             return nfes 
         
         except sqlite3.Error as e:
