@@ -3,7 +3,7 @@ import dotenv
 
 from nfe360.database.queries import inaticvate_query, get_from_key
 from nfe360.util.send_file import handler_file_type
-from nfe360.util.database import make_db_conection
+from nfe360.util.database import make_db_connection
 from nfe360.util.pagination import paginate
 
 from datetime import datetime
@@ -28,7 +28,7 @@ def display_recent_nfes() -> str:
     try:
         
         db_path = DATABASE
-        db = make_db_conection(db_path)
+        db = make_db_connection(db_path)
         registered = request.args.get('isregistered', 'all')
         search_key = request.args.get('search_key', False)
         
@@ -55,14 +55,13 @@ def download_xml_or_danfe():
     try:
         
         db_path = DATABASE
-        db = make_db_conection(db_path)
+        db = make_db_connection(db_path)
         filename = Path(request.args.get('filename', False))
          
         with db.connect():
             wraped_nfe = db.sqlquery(get_from_key,(filename.stem,))
         
-        response = handler_file_type(app, filename, wraped_nfe)
-        
+        response = handler_file_type(filename, wraped_nfe)
         return response
         
     except Exception as e:
@@ -76,7 +75,7 @@ def deny_nfe():
         nfe_key = request.form.get('nfe_key', False)
         redirect_url = request.form.get('url', False)
         db_path = DATABASE
-        db = make_db_conection(db_path)
+        db = make_db_connection(db_path)
         
         with db.connect():
             db.sqlquery(inaticvate_query, (nfe_key,), commit=True)

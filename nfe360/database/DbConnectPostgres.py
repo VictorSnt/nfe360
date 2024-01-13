@@ -1,3 +1,5 @@
+from contextlib import contextmanager
+from typing import Any, Type
 import psycopg2
 
 
@@ -12,10 +14,10 @@ class DbConnectPostgres:
         self.error = None
         self.conn = None
         self.cursor = None
-
-    def connect(self) -> bool:
+    
+    @contextmanager
+    def connect(self) -> Type["DbConnectPostgres"]:
         try:
-
             conn = psycopg2.connect(
                 host=self.host,
                 port=self.port,
@@ -26,32 +28,47 @@ class DbConnectPostgres:
             self.conn = conn
             self.cursor = self.conn.cursor()
             self.error = None
-            return self
+            yield self
+        
         except psycopg2.Error as e:
-            self.error = ("Falha na conexão:", e)
-            return False
+            raise e
+        
+        finally:
+            self.closeconnection()
+            
 
-    def sqlquery(self, query) -> list | bool:
+    def sqlquery(
+            self, 
+            query: str, 
+            argumensts: bool|tuple[Any]=False, 
+            commit: bool=False) -> list[dict[str, Any]]|list[None]:
 
         if not self.cursor:
-            self.error = "Você não esta conectado em nenhum banco"
-            return False
-        else:
-            try:
-
+            raise psycopg2.Error("Você não esta conectado em nenhum banco")
+    
+        try:
+            if not argumensts:
                 self.cursor.execute(query)
+            else:
+                self.cursor.execute(query, argumensts)
+            
+            if commit:
+                return
 
-                columns = [desc[0] for desc in self.cursor.description]
-                rows = self.cursor.fetchall()
-                results_list = [{column: value for column, value in zip(columns, row)} for row in rows]
+            columns = [desc[0] for desc in self.cursor.description]
+            rows = self.cursor.fetchall()
+            results_list = [
+                {column: value for column, value in zip(columns, row)}
+                    for row in rows
+                ]
 
-                return results_list if len(results_list) > 0 else False
+            return results_list or []
 
-            except psycopg2.Error as e:
-                self.error = ("Falha na conexão:", e)
-                return False
+        except psycopg2.Error as e:
+            raise e
+            
 
-    def closeconnection(self) -> bool:
+    def closeconnection(self) -> None:
 
         try:
             self.cursor.close()
@@ -60,5 +77,5 @@ class DbConnectPostgres:
             return True
 
         except psycopg2.Error as e:
-            self.error = f"A conecção não foi encerrada {e}"
-            return False
+            raise e
+            

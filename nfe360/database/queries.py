@@ -16,15 +16,16 @@ create_table_query: str = """
 """
 
 nfe_insert_query: str = """
-                INSERT INTO nfes (
-                    issuer, cnpj, date, nftotal, key, nfenumber, isvalid, isregistered, xmlstring, danfebinary
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """
+    INSERT INTO nfes (
+        issuer, cnpj, date, nftotal, key, 
+        nfenumber, isvalid, isregistered, xmlstring, danfebinary
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """
 
 nfe_deletion_query: str = """
-                        DELETE FROM nfes
-                        WHERE key = ?
-                """
+    DELETE FROM nfes
+    WHERE key = ?
+    """
 
 inaticvate_query = """
     UPDATE nfes
@@ -33,3 +34,31 @@ inaticvate_query = """
     """
 
 get_from_key = 'SELECT * FROM nfes WHERE key = ?'
+
+all_valid_nfes = """
+    SELECT *
+    FROM nfes
+    WHERE isvalid = TRUE
+    ORDER BY date DESC;
+    """ 
+
+all_inactive_nfes = """
+    SELECT *
+    FROM nfes
+    WHERE isvalid = FALSE
+    ORDER BY date DESC;
+    """  
+ 
+nfes_by_status = """
+    SELECT *
+    FROM nfes
+    WHERE isregistered = {}
+    AND isvalid = TRUE
+    ORDER BY date DESC;
+    """ 
+
+all_nfes = """
+    SELECT *
+    FROM nfes
+    ORDER BY date DESC;
+    """ 
