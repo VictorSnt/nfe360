@@ -45,7 +45,7 @@ class DbConnectPostgres:
                 rows = self.cursor.fetchall()
                 results_list = [{column: value for column, value in zip(columns, row)} for row in rows]
 
-                return results_list if len(results_list) > 0 else False
+                return results_list or []
 
             except psycopg2.Error as e:
                 self.error = ("Falha na conexão:", e)

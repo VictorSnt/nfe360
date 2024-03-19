@@ -132,7 +132,9 @@ def main(only_seed=False):
             os.environ['USER'], 
             os.environ['PASSWD']
         )
-    with db.connect():    
+    db_alterdata.connect()
+    
+    with db.connect():
         nfes: list[Nfe] = db.retrieve_all_nfe()
         for nf in nfes:
             
@@ -140,6 +142,7 @@ def main(only_seed=False):
                 SELECT * FROM wshop.documento_nfe
                 WHERE chaveacesso = '{nf.key}'
             '''
+            
             response = db_alterdata.sqlquery(query)
             
             if response:
@@ -149,6 +152,8 @@ def main(only_seed=False):
                     commit=True)
                 db.conn.commit()
             
+            
+    db_alterdata.closeconnection()
 
 if __name__ == '__main__': 
     main()
