@@ -46,20 +46,28 @@ async def alternative_download_nf_xml(access_key, download_folder):
             page = await browser.new_page()
 
             await page.goto('https://meudanfe.com.br/')
-
-            await page.wait_for_selector('#chaveAcessoBusca')
-            await page.click('#chaveAcessoBusca')
-            await page.keyboard.insert_text(access_key)
-
-            await page.wait_for_selector('a[onclick="searchNfe()"]')
-            await page.click('a[onclick="searchNfe()"]')
-
-            await page.wait_for_selector('a[onclick="downloadXml()"]')
-            downloadPromise = page.wait_for_event('download')
-            await page.click('a[onclick="downloadXml()"]')
+            inputs_de_texto = await page.query_selector_all('input[type="text"]')
+            if inputs_de_texto:
+                primeiro_input = inputs_de_texto[0]
+                await primeiro_input.type(access_key)
+            try:
+                await page.eval_on_selector('button:has-text("Buscar DANFE/XML")', 'button => button.click()')
+                print("Botão clicado com sucesso.")
+            except Exception as e:
+                print(f"Erro ao clicar no botão: {e}")
+            await asyncio.sleep(10)
+            try:
+                buttons = await page.query_selector_all('button')
+                if buttons:
+                    xml_button = buttons[2]
+                    await xml_button.click()
+            except Exception as e:
+                print(f"Erro: {e}")
+  
+            downloadPromise = page.wait_for_event('download')  
             download = await downloadPromise
             await download.save_as(download_folder / filename )
-         
+            print('baixado')
             await asyncio.sleep(10)  
 
             await page.close()

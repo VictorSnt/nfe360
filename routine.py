@@ -4,4 +4,5 @@ import time
 if __name__ == '__main__':
         while True:
                 main()
-                time.sleep(3600)
+                print('done')
+                time.sleep(3600*2)

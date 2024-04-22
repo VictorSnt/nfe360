@@ -71,7 +71,7 @@ def seed_database(db: DbConnection, DOWNLOADS_FOLDER: Path) -> None:
             if len(file_list) > 1
             ]
         xml_manager.format_xml_to_standard(xml_dir=xml_files)
-        xml_as_dicts: [list[dict]] = xml_manager.xml_to_dict(DOWNLOADS_FOLDER)
+        xml_as_dicts: list[dict] = xml_manager.xml_to_dict(DOWNLOADS_FOLDER)
 
         for xml_dict in xml_as_dicts:
             
@@ -110,21 +110,20 @@ def seed_database(db: DbConnection, DOWNLOADS_FOLDER: Path) -> None:
 def main(only_seed=False):
      
     dotenv.load_dotenv()
-    
     MODULES_PATH = os.environ.get('MODULES_PATH', None)
     DOWNLOADS_FOLDER =  Path(os.environ.get('DOWNLOADS_FOLDER', None))
     DATABASE = Path(os.environ.get('DATABASE', False))
     sys.path.append(MODULES_PATH)
-
     db = DbConnection(DATABASE)
-    
 
     if only_seed: 
         seed_database(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER) 
         return
-    
-    run_download_rotine(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER)
-    seed_database(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER)
+    try: 
+        run_download_rotine(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER)
+        seed_database(db=db, DOWNLOADS_FOLDER=DOWNLOADS_FOLDER)
+    except Exception as e:
+        print("rotina n rolou " + e)
     db_alterdata = DbConnectPostgres(
             os.environ['HOST'],
             os.environ['PORT'], 

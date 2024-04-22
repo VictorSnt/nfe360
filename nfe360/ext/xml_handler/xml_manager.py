@@ -1,45 +1,52 @@
 import xmltodict
 import xml.etree.ElementTree as ET
+from xml.parsers.expat import ExpatError 
 from datetime import datetime, timezone, timedelta
 
+
+def adicionar_prefixo_ns0(xml_string):
+    root = ET.fromstring(xml_string)
+    ns = {'ns0': 'http://www.portalfiscal.inf.br/nfe'}
+    for elem in root.iter():
+        if '}' not in elem.tag:
+            elem.tag = 'ns0:' + elem.tag
+    xml_com_prefixo = ET.tostring(root, encoding='utf8', method='xml')
+    return xml_com_prefixo.decode('utf8')
+
+def modificar_dict(xml_string):
+    try:
+        root = ET.fromstring(xml_string)
+        for infNFe in root.iter('{http://www.portalfiscal.inf.br/nfe}infNFe'):
+            for det in infNFe.iter('{http://www.portalfiscal.inf.br/nfe}det'):
+                nItem = det.find('./{http://www.portalfiscal.inf.br/nfe}nItem')
+                if nItem is not None:
+                    det.attrib['nItem'] = nItem.text
+                    det.remove(nItem)
+        return ET.tostring(root, encoding='utf-8').decode('utf-8')
+    except ET.ParseError as e:
+        return
 
 def format_xml_to_standard(xml_dir: list):
     for xml_path in xml_dir:
         with open(xml_path, 'r', encoding='utf-8') as xml_file:
-            xml_dict = xml_file.read()
-        
-        def modificar_dict(xml_string):
-            root = ET.fromstring(xml_string)
-
-            for infNFe in root.iter('{http://www.portalfiscal.inf.br/nfe}infNFe'):
-                for det in infNFe.iter('{http://www.portalfiscal.inf.br/nfe}det'):
-                    nItem = det.find('./{http://www.portalfiscal.inf.br/nfe}nItem')
-                    if nItem is not None:
-                        det.attrib['nItem'] = nItem.text
-                        det.remove(nItem)
-
-            return ET.tostring(root, encoding='utf-8').decode('utf-8')
-
-        
-
-        xml_modificado = modificar_dict(xml_dict)
-
-        with open(xml_path, 'w', encoding='utf-8') as output_file:
-            output_file.write(xml_modificado)
-
-        
-
+            xml_string = xml_file.read()
+        xml_modificado = modificar_dict(xml_string)
+        if xml_modificado:
+            with open(xml_path, 'w', encoding='utf-8') as output_file:
+                output_file.write(xml_modificado)
 
 def xml_to_dict(downloads_folder):
     
     xml_info_list = []
     xml_files = [str(xml) for xml in downloads_folder.iterdir() if str(xml.name).endswith('.xml')]
-    
+   
     for file in xml_files:
         data = {}
-        with open(file, 'r', encoding='utf-8') as xml:
-            data_dict = xmltodict.parse(xml.read())
-
+        try:
+            with open(file, 'r', encoding='utf-8') as xml:
+                data_dict = xmltodict.parse(xml.read())
+        except ExpatError:
+            continue
         
         emitent_info = data_dict['ns0:nfeProc']['ns0:NFe']['ns0:infNFe']['ns0:emit']
         nfe_info = data_dict['ns0:nfeProc']['ns0:protNFe']['ns0:infProt']
