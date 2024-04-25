@@ -7,7 +7,7 @@ async def download_nf_xml(access_key, download_folder):
         filename = access_key + '.xml'
         async with async_playwright() as p:
             browser = await p.chromium.launch(
-                headless=True
+                headless=False
             )
             page = await browser.new_page()
             
@@ -40,8 +40,8 @@ async def alternative_download_nf_xml(access_key, download_folder):
         filename = access_key + '.xml'
 
         async with async_playwright() as p:
-            browser = await p.firefox.launch(
-                headless=True
+            browser = await p.chromium.launch(
+                headless=False
             )
             page = await browser.new_page()
 
@@ -55,7 +55,7 @@ async def alternative_download_nf_xml(access_key, download_folder):
                 print("Botão clicado com sucesso.")
             except Exception as e:
                 print(f"Erro ao clicar no botão: {e}")
-            await asyncio.sleep(10)
+            await asyncio.sleep(120)
             try:
                 buttons = await page.query_selector_all('button')
                 if buttons:
@@ -63,7 +63,7 @@ async def alternative_download_nf_xml(access_key, download_folder):
                     await xml_button.click()
             except Exception as e:
                 print(f"Erro: {e}")
-  
+            await asyncio.sleep(120)
             downloadPromise = page.wait_for_event('download')  
             download = await downloadPromise
             await download.save_as(download_folder / filename )

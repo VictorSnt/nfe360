@@ -15,6 +15,7 @@ def adicionar_prefixo_ns0(xml_string):
 
 def modificar_dict(xml_string):
     try:
+        xml_string = adicionar_prefixo_ns0(xml_string)
         root = ET.fromstring(xml_string)
         for infNFe in root.iter('{http://www.portalfiscal.inf.br/nfe}infNFe'):
             for det in infNFe.iter('{http://www.portalfiscal.inf.br/nfe}det'):
@@ -48,22 +49,24 @@ def xml_to_dict(downloads_folder):
         except ExpatError:
             continue
         
-        emitent_info = data_dict['ns0:nfeProc']['ns0:NFe']['ns0:infNFe']['ns0:emit']
-        nfe_info = data_dict['ns0:nfeProc']['ns0:protNFe']['ns0:infProt']
-        payment_info = data_dict['ns0:nfeProc']['ns0:NFe']['ns0:infNFe']['ns0:pag']['ns0:detPag']
-        if isinstance(payment_info, list):
-            data["Valor Total da NF-e: "] = payment_info[0]['ns0:vPag']
-        else:
-            data["Valor Total da NF-e: "] = payment_info['ns0:vPag']
-        data["Raz\u00e3o Social do Emitente:"] = emitent_info['ns0:xNome']
-        data["CNPJ/CPF:"] = emitent_info['ns0:CNPJ'] 
-        data["Data de Emiss\u00e3o: "] = datetime.fromisoformat(nfe_info['ns0:dhRecbto']).astimezone(timezone(timedelta(hours=-3)))
-        data["Data de Emiss\u00e3o: "] = data["Data de Emiss\u00e3o: "].strftime('%d/%m/%Y %H:%M:%S')
-        
-        data['access_key'] = nfe_info['ns0:chNFe']
-        data['nfe'] = data_dict['ns0:nfeProc']['ns0:NFe']['ns0:infNFe']['ns0:ide']['ns0:nNF']
-        xml_info_list.append(data)
-    
-    return xml_info_list
+        try:
+            emitent_info = data_dict['ns0:nfeProc']['ns0:NFe']['ns0:infNFe']['ns0:emit']
+            nfe_info = data_dict['ns0:nfeProc']['ns0:protNFe']['ns0:infProt']
+            payment_info = data_dict['ns0:nfeProc']['ns0:NFe']['ns0:infNFe']['ns0:pag']['ns0:detPag']
+            if isinstance(payment_info, list):
+                data["Valor Total da NF-e: "] = payment_info[0]['ns0:vPag']
+            else:
+                data["Valor Total da NF-e: "] = payment_info['ns0:vPag']
+            data["Raz\u00e3o Social do Emitente:"] = emitent_info['ns0:xNome']
+            data["CNPJ/CPF:"] = emitent_info['ns0:CNPJ'] 
+            data["Data de Emiss\u00e3o: "] = datetime.fromisoformat(nfe_info['ns0:dhRecbto']).astimezone(timezone(timedelta(hours=-3)))
+            data["Data de Emiss\u00e3o: "] = data["Data de Emiss\u00e3o: "].strftime('%d/%m/%Y %H:%M:%S')
+            
+            data['access_key'] = nfe_info['ns0:chNFe']
+            data['nfe'] = data_dict['ns0:nfeProc']['ns0:NFe']['ns0:infNFe']['ns0:ide']['ns0:nNF']
+            xml_info_list.append(data)
+        except KeyError:
+            input(data_dict)
+        return xml_info_list
 
 
